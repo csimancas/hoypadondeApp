@@ -11,9 +11,6 @@ const LogIn = () => {
     <ScreenContainer>
       <View style={styles.logoContainer}>
 
-      <Image source={require('../assets/nameLogo.png')} style={styles.image}
-        resizeMode='contain'
-      />
       <Image source={require('../assets/logo_nombre.png')} style={styles.logo} resizeMode='contain'/>
       </View>
       
