@@ -1,8 +1,10 @@
 import React from 'react';
-import { View,  Button, Image, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import NavigationMethods from '../utils/navigation';
 import ScreenContainer from '../components/ui/atoms/ScreenContainer';
+import Button from '../components/ui/atoms/Button';
+import colors from '../utils/colors';
 
 
 const LogIn = () => {
@@ -11,25 +13,32 @@ const LogIn = () => {
     <ScreenContainer>
       <View style={styles.logoContainer}>
 
-      <Image source={require('../assets/logo_nombre.png')} style={styles.logo} resizeMode='contain'/>
+      <Image source={require('../assets/logo_nombre.png')} style={styles.image} resizeMode='contain'/>
       </View>
-      
       <TextInput
-        outlineColor="white"
-        selectionColor="white"
         label="Email"
-        style={{width: "100%", height: 50, marginTop: 20}}
+        style={{width: '100%', height: 50, marginTop: 20}}
       />
       <TextInput
         label="Contraseña"
-        style={{width: "100%", height: 50, marginTop: 20}}
+        style={{width: '100%', height: 50, marginTop: 20}}
       />
-      <Button
-        title="Iniciar Sesión"
-        onPress={() => {
-          navigateTo('Home');
-        }}
-      />
+    <Button
+						gutterTop={20}
+						useAnonymous={false}
+						width={'100%'}
+						variant={'outlined'}
+						text={'Iniciar Sesión'}
+						borderColor={colors.darkTheme.colors.primary}
+						borderRadiusRounded={4}
+						isShowLoader={false}
+						isLoading={false}
+						color={colors.darkTheme.colors.text}
+						backgroundColor={colors.darkTheme.colors.primary}
+						action={() => {
+							navigateTo('Home');
+						}}
+					/>
     </ScreenContainer>
   );
 };
@@ -47,8 +56,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image:{
-    width: 200,
-    height: 200,
+    width: 250,
+    height: 250,
   },
   logo:{
     width: 50,
