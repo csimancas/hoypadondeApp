@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import { View,  Image, StyleSheet } from 'react-native';
 import NavigationMethods from '../utils/navigation';
-import ScreenContainer from '../components/ScreenContainer';
+import ScreenContainer from '../components/ui/atoms/ScreenContainer';
 
 const Splash = () => {
   const { navigateTo } = NavigationMethods();

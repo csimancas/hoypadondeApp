@@ -23,11 +23,9 @@ const darkTheme = {
 console.log(colors)
 
 function App(): React.JSX.Element {
-  const scheme = useColorScheme();
-  const AppTheme = scheme === 'dark' ? darkTheme : lightTheme;
 
   return (
-    <PaperProvider theme={AppTheme}>
+    <PaperProvider theme={darkTheme}>
       <Navigation />
     </PaperProvider>
   );

@@ -1,9 +1,9 @@
 import React from 'react';
 import { View,  Button, Image, StyleSheet } from 'react-native';
 import { TextInput } from 'react-native-paper';
-import ScreenContainer from '../components/ScreenContainer';
 import NavigationMethods from '../utils/navigation';
-import Text from '../components/Text';
+import ScreenContainer from '../components/ui/atoms/ScreenContainer';
+
 
 const LogIn = () => {
   const { navigateTo } = NavigationMethods();
@@ -37,7 +37,6 @@ const LogIn = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2C2C2C',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,

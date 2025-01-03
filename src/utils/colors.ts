@@ -25,11 +25,4 @@ const colors = {
   },
 };
 
-const usePreferredTheme = () => {
-  const colorScheme = useColorScheme(); // Devuelve 'light' o 'dark'
-  
-  return colorScheme === 'dark' ? colors.darkTheme : colors.lightTheme;
-};
-
 export default colors;
-export { usePreferredTheme };

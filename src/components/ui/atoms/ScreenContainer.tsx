@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, useColorScheme } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 type ScreenContainerProps = {
@@ -7,14 +7,11 @@ type ScreenContainerProps = {
 }
 
 const ScreenContainer = ({ children }: ScreenContainerProps) => {
-    const scheme = useColorScheme();
-    const backgroundColor = scheme === 'dark' ? '#1A242F' : '#EFE8D8';
+    const backgroundColor =  '#1A242F';
 
     return (
         <SafeAreaProvider style={[styles.container, { backgroundColor }]}>
-            <View >
                 {children}
-            </View>
         </SafeAreaProvider>
     );
 }
@@ -22,10 +19,8 @@ const ScreenContainer = ({ children }: ScreenContainerProps) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'flex-start',
-        paddingHorizontal: 20,
+        justifyContent: 'center',
     },
-    
 });
 
 export default ScreenContainer;
