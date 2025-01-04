@@ -16,31 +16,6 @@ import colors from '../utils/colors';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const logo = require('../assets/logo_nombre.png');
-
-// Componente para Map que se define fuera del render
-const MapTabIcon = ({ focused }) => (
-  <View style={{
-    backgroundColor: colors.darkTheme.colors.background,
-    height: 60,
-    width: 60,
-    borderRadius: 30,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 40,
-  }}>
-    <Image
-      source={logo}
-      style={{
-        width: 45,
-        height: 45,
-        tintColor: focused ? '#D4AF37' : 'gray',
-        marginBottom: 5,
-      }}
-    />
-  </View>
-);
-
 // Componente para los iconos generales
 const TabIcon = ({ route, focused, color, size }) => {
   let iconName;
@@ -48,6 +23,8 @@ const TabIcon = ({ route, focused, color, size }) => {
     iconName = focused ? 'home' : 'home';
   } else if (route.name === 'Profile') {
     iconName = focused ? 'user' : 'user-o';
+  } else if (route.name === 'Map') {
+    iconName = focused ? 'map-marker' : 'map-marker';
   }
 
   return <Icon name={iconName} size={size} color={color} />;
@@ -65,9 +42,6 @@ function HomeStack() {
           paddingTop: 10,
         },
         tabBarIcon: ({ focused, color, size }) => {
-          if (route.name === 'Map') {
-            return <MapTabIcon focused={focused} />;
-          }
           return <TabIcon route={route} focused={focused} color={color} size={size} />;
         },
         tabBarActiveTintColor: '#D4AF37',
@@ -76,9 +50,7 @@ function HomeStack() {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Map" component={Map} options={{
-        tabBarLabel: '',
-      }}/>
+      <Tab.Screen name="Map" component={Map} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );

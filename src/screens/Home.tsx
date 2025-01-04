@@ -1,15 +1,19 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
-import SearchBar from '../components/ui/atoms/SearchBar';
+import { View, StatusBar, SafeAreaView } from 'react-native';
+import BussinesCard from '../components/ui/molecules/BussinesCard';
+import color from '../utils/res/color';
 
 const Home = () => {
   return (
-    <View>
-      <SearchBar />
-      <Text>Home</Text>
-    </View>
+    <>
+
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ paddingHorizontal: 10 }}>
+          <BussinesCard />
+        </View>
+      </SafeAreaView>
+    </>
   );
 };
-
 
 export default Home;
