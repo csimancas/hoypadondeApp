@@ -1,5 +1,5 @@
-import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import React from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 
 import Label from '../atoms/Label';
 import Loader from '../atoms/Loader';
@@ -10,8 +10,8 @@ import colors from '../../../utils/res/color';
 export interface ButtonProps {
 	text: string;
 	subText?: string;
-	variant?: "contained" | "outlined" | "text";
-	size?: "sm" | "md" | "lg";
+	variant?: 'contained' | 'outlined' | 'text';
+	size?: 'sm' | 'md' | 'lg';
 	gutterBottom?: number;
 	gutterTop?: number;
 	width?: string;
@@ -23,10 +23,10 @@ export interface ButtonProps {
 	disabled?: boolean;
 	// text props
 	color?: string;
-	font?: "light" | "regular" | "italic" | "bold" | "medium" | "black";
-	transform?: "none" | "uppercase" | "lowercase" | "capitalize";
-	align?: "auto" | "left" | "right" | "center" | "justify";
-	alignVertical?: "auto" | "top" | "bottom" | "center";
+	font?: 'light' | 'regular' | 'italic' | 'bold' | 'medium' | 'black';
+	transform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize';
+	align?: 'auto' | 'left' | 'right' | 'center' | 'justify';
+	alignVertical?: 'auto' | 'top' | 'bottom' | 'center';
 	// styles
 	btnWrapperStyles?: any;
 	btnTextStyles?: any;
@@ -44,21 +44,21 @@ const Button = (props: ButtonProps) => {
 	const {
 		text,
 		subText = undefined,
-		variant = "contained",
+		variant = 'contained',
 		gutterBottom = 0,
 		gutterTop = 0,
-		size = "lg",
+		size = 'lg',
 		leftComponent,
 		rightComponent,
-		width = "100%",
+		width = '100%',
 		backgroundColor,
 		borderColor,
 		// text props
 		color = colors.light.colorFontPrimary,
-		font = "regular",
-		align = "center",
-		alignVertical = "center",
-		transform = "none",
+		font = 'regular',
+		align = 'center',
+		alignVertical = 'center',
+		transform = 'none',
 
 		btnWrapperStyles,
 		btnTextStyles,
@@ -85,7 +85,7 @@ const Button = (props: ButtonProps) => {
 				marginBottom: R.unit.scale(gutterBottom),
 				marginTop: R.unit.scale(gutterTop),
 				backgroundColor,
-				borderColor: borderColor ? borderColor : "transparent",
+				borderColor: borderColor ? borderColor : 'transparent',
 				disabled: false,
 				borderRadius:
 					borderRadiusRounded !== -1
@@ -97,10 +97,10 @@ const Button = (props: ButtonProps) => {
 		>
 			<View
 				style={{
-					flexDirection: "row",
-					width: "100%",
-					alignItems: "center",
-					justifyContent: "center",
+					flexDirection: 'row',
+					width: '100%',
+					alignItems: 'center',
+					justifyContent: 'center',
 				}}
 			>
 				{isShowLoader && isLoading ? (
@@ -161,15 +161,15 @@ const Button = (props: ButtonProps) => {
 const styles = StyleSheet.create({
 	btn: {
 		flex: 0,
-		alignItems: "center",
-		justifyContent: "center",
-		flexDirection: "row",
+		alignItems: 'center',
+		justifyContent: 'center',
+		flexDirection: 'row',
 	},
 	btn_text: {
-		backgroundColor: "transparent",
+		backgroundColor: 'transparent',
 	},
 	btn_outlined: {
-		backgroundColor: "transparent",
+		backgroundColor: 'transparent',
 		borderColor: colors.light.primary11,
 		borderWidth: R.unit.scale(1),
 	},
@@ -178,12 +178,12 @@ const styles = StyleSheet.create({
 	},
 	leftSection: {
 		flexGrow: 0,
-		flexDirection: "row",
-		alignItems: "center",
+		flexDirection: 'row',
+		alignItems: 'center',
 		paddingRight: R.unit.scale(8),
 	},
 	rightSection: {
-		position: "absolute",
+		position: 'absolute',
 		right: R.unit.scale(10),
 	},
 });

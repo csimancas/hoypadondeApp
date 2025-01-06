@@ -2,7 +2,14 @@ import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import Label from '../atoms/Label';
 
-const BussinesCard = () => {  
+
+type BussinesCardProps = {
+    name: string;
+    location: string;
+    schedule: string;
+};
+
+const BussinesCard = ({ name, location, schedule }: BussinesCardProps) => {
     return (
         <View style={styles.container}>
             <Image
@@ -12,13 +19,13 @@ const BussinesCard = () => {
             />
             <View style={styles.infoContainer}>
                 <Label variant="title" style={styles.title}>
-                    Nombre de restaurante
+                    {name}
                 </Label>
                 <Label variant="content" style={styles.content}>
-                    Ubicación
+                    {location}
                 </Label>
                 <Label variant="content" style={styles.content}>
-                    Horario
+                    {schedule}
                 </Label>
             </View>
         </View>
