@@ -11,8 +11,11 @@ prepare_react_native_project!
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
   Pod::UI.puts "Configuring Pod with #{linkage}ally linked Frameworks".green
-  use_frameworks! :linkage => linkage.to_sym
+  use_frameworks! :linkage => :static
+  $RNFirebaseAsStaticFramework = true
 end
+
+use_modular_headers!
 
 target 'hoypadonde' do
   config = use_native_modules!
@@ -23,18 +26,29 @@ target 'hoypadonde' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  # Configuración de Firebase
+  pod 'Firebase/CoreOnly', '11.5.0', :modular_headers => true
+  pod 'Firebase/Analytics', '11.5.0', :modular_headers => true
+  pod 'Firebase/Firestore', '11.5.0', :modular_headers => true
+
   target 'hoypadondeTests' do
     inherit! :complete
-    # Pods for testing
+    # Pods para pruebas
   end
 
   post_install do |installer|
-    # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202
+    # Solución para problemas de compatibilidad de arquitecturas (simulador)
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
+      end
+    end
+
+    # Ajustes post instalación
     react_native_post_install(
       installer,
       config[:reactNativePath],
-      :mac_catalyst_enabled => false,
-      # :ccache_enabled => true
+      :mac_catalyst_enabled => false
     )
   end
 end

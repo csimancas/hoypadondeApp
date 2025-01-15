@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import React, { act } from 'react';
+import { View, Image, StyleSheet, Pressable} from 'react-native';
 import Label from '../atoms/Label';
 
 type OpeningHours = {
@@ -17,6 +17,7 @@ type BussinesCardProps = {
   location: string;
   opening_hours: OpeningHours;
   image: string;
+  action: () => void;
 };
 
 const getTodaySchedule = (opening_hours: OpeningHours): string => {
@@ -29,17 +30,17 @@ const getTodaySchedule = (opening_hours: OpeningHours): string => {
   return opening_hours[todayKey] || 'Horario no disponible';
 };
 
-const BussinesCard = ({ name, location, opening_hours, image }: BussinesCardProps) => {
+const BussinesCard = ({ name, location, opening_hours, image, action }: BussinesCardProps) => {
   // Obtener el horario del día actual
   const todaySchedule = getTodaySchedule(opening_hours);
 
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={action}>
       <Image
         source={{ uri: image }}
         style={styles.image}
         resizeMode="cover"
-      />
+        />
       <View style={styles.infoContainer}>
         <Label variant="title" style={styles.title}>
           {name}
@@ -51,7 +52,7 @@ const BussinesCard = ({ name, location, opening_hours, image }: BussinesCardProp
           {todaySchedule}
         </Label>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

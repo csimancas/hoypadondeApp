@@ -3,25 +3,32 @@ import { View, FlatList, StyleSheet, Text, StatusBar } from 'react-native';
 import BussinesCard from '../molecules/BussinesCard';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import bussines from '../../../utils/data';
+import NavigationMethods from '../../../utils/navigation';
 
-const BussinesList = () => (
+
+const BussinesList = () => {
+const {navigateTo} = NavigationMethods();
+return (
   <SafeAreaProvider>
     <SafeAreaView style={styles.container}>
       <FlatList
         data={bussines}
         renderItem={({ item }) => (
           <BussinesCard
+          action={() => navigateTo('BussinesDetail')}
             image={item.images[0]}
             name={item.name}
             location={"location"}
-            opening_hours={item.opening_hours} // Pasamos los horarios completos aquí
+            opening_hours={item.opening_hours} 
           />
         )}
         keyExtractor={item => item.id}
       />
     </SafeAreaView>
   </SafeAreaProvider>
-);
+)
+}
+
 
 const styles = StyleSheet.create({
   container: {
