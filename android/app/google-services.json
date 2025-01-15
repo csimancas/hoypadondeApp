@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "106048053188",
+    "project_id": "hoypadonde-69352",
+    "storage_bucket": "hoypadonde-69352.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106048053188:android:b5d6f35977fda2d95fce91",
+        "android_client_info": {
+          "package_name": "com.hoypadonde"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDZ93djt8EfuyLECk1h_8daBOuq733kQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
