@@ -12,7 +12,12 @@
           "package_name": "com.hoypadonde"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "106048053188-eggocec3lopnarphr0ktj5tos99c8q1p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDDZ93djt8EfuyLECk1h_8daBOuq733kQk"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106048053188-eggocec3lopnarphr0ktj5tos99c8q1p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "106048053188-hnhngvkmjinmtbtg0e3lulqk226394d4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.hoypadonde"
+              }
+            }
+          ]
         }
       }
     }

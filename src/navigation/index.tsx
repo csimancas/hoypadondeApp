@@ -11,7 +11,7 @@ import Favorites from '../screens/Favorites';
 import Profile from '../screens/Profile';
 import Splash from '../screens/Splash';
 import Map from '../screens/Map';
-import LogIn from '../screens/LogIn';
+import LogIn from '../screens/LogInScreen';
 import BussinesDetail from '../screens/BussinesDetail';
 
 import colors from '../utils/colors';
