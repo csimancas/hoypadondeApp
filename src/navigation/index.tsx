@@ -12,7 +12,8 @@ import Profile from '../screens/Profile';
 import Splash from '../screens/Splash';
 import Map from '../screens/Map';
 import LogIn from '../screens/LogInScreen';
-import BussinesDetail from '../screens/BussinesDetail';
+import RegisterScreen from '../screens/RegisterScreen';
+import BussinesDetail from '../screens/BussinesDetailScreen';
 
 import colors from '../utils/colors';
 
@@ -74,6 +75,7 @@ function RootStack() {
     <Stack.Navigator>
       <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
       <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} />
+      <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Home" component={HomeStack} options={{ headerShown: false }} />
       <Stack.Screen name="BussinesDetail" component={BussinesDetail} />
     </Stack.Navigator>

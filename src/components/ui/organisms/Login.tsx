@@ -5,12 +5,7 @@ import NavigationMethods from '../../../utils/navigation';
 import ScreenContainer from '../atoms/ScreenContainer';
 import Label from '../atoms/Label';
 import Button from '../atoms/button';
-
-
 import colors from '../../../utils/colors';
-
-
-
 
 const LogIn = () => {
   const { navigateTo } = NavigationMethods();
@@ -49,7 +44,7 @@ const LogIn = () => {
           color: "white",
           zIndex: 1,
           }}>¿Aun no tienes una cuenta?</Label>
-          <Pressable onPress={() => console.log("Registro")}>
+          <Pressable onPress={() => navigateTo('Register')}>
             <Label variant="title3" style={{
               color: colors.darkTheme.colors.primary,
               fontWeight: 'bold',

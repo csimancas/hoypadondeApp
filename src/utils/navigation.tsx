@@ -8,11 +8,15 @@ const NavigationMethods = () => {
         navigation.navigate(screen);
     };
 
+    const goBack = () => {
+        navigation.goBack();
+    };
 
 
 
     return {
         navigateTo,
+        goBack,
     };
 }
 
