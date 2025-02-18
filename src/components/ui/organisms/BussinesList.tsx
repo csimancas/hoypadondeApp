@@ -4,13 +4,16 @@ import BussinesCard from '../molecules/BussinesCard';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import bussines from '../../../utils/data';
 import NavigationMethods from '../../../utils/navigation';
-
+import CategoriesList from '../molecules/CategoryList';
+import SearchBarComponent from '../molecules/SearchBar';
 
 const BussinesList = () => {
 const {navigateTo} = NavigationMethods();
 return (
   <SafeAreaProvider>
     <SafeAreaView style={styles.container}>
+      <SearchBarComponent onSearch={(query) => console.log(query)} />
+      <CategoriesList />
       <FlatList
         data={bussines}
         renderItem={({ item }) => (
