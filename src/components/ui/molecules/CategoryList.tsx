@@ -40,8 +40,9 @@ const CategoriesList = () => {
             >
               <MaterialCommunityIcons
                 name={item.icon}
-                size={32} // Icono más grande para mejorar visibilidad
+                size={18}
                 color={isSelected ? '#FFFFFF' : '#12171D'}
+                style={styles.icon}
               />
               <Text
                 style={[
@@ -62,31 +63,35 @@ const CategoriesList = () => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
-    paddingHorizontal: 16,
+    padding: 16,
   },
   listContainer: {
     paddingHorizontal: 8,
   },
   categoryButton: {
-    width: 90,
-    height: 90,
-    flexDirection: 'column',
+    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    width: 'auto',
     borderRadius: 16,
     marginHorizontal: 6,
     borderWidth: 1,
     borderColor: '#E0E0E0',
-    elevation: 4, // Sombra en Android
-    shadowColor: '#000', // Sombra en iOS
+    elevation: 4,
+    shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
   },
+  icon: {
+    marginRight: 8,
+  },
   categoryText: {
-    fontSize: 12,
-    marginTop: 4,
-    textAlign: 'center', // Para mantener el texto alineado
+    fontSize: 14,
+    textAlign: 'left',
+    flexShrink: 1,
   },
 });
 
