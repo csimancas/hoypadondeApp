@@ -13,7 +13,7 @@ const SearchBarComponent = ({ onSearch }: { onSearch: (query: string) => void })
   return (
     <View style={styles.container}>
       <Searchbar
-        placeholder="Search"
+        placeholder="¿Hoypadonde? ..."
         onChangeText={handleSearchChange}
         value={searchQuery}
         style={styles.searchbar}
@@ -28,8 +28,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   searchbar: {
-    borderRadius: 12,
-    backgroundColor: "#F5F5F5",
+    borderRadius: 16,
+    backgroundColor: "#FAFAFA",
+    borderWidth: 1,
+    borderColor: "#CCCCCC",
   },
 });
 

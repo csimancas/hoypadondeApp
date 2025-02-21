@@ -9,7 +9,7 @@ const categories = [
   { id: '3', name: 'Cinemas', icon: 'filmstrip' },
   { id: '4', name: 'Gyms', icon: 'dumbbell' },
   { id: '5', name: 'Cafés', icon: 'coffee' },
-  { id: '6', name: 'Hotels', icon: 'bed' },
+  { id: '6', name: 'Hoteles', icon: 'bed' },
 ];
 
 const CategoriesList = () => {

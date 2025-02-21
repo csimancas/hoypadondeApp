@@ -4,10 +4,20 @@ import Label from '../atoms/Label';
 import AntDesing from 'react-native-vector-icons/AntDesign';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import DollarIconSVG from '../../../utils/svg/DollasIcon';
+import OpenTag from '../atoms/OpenTag';
+
 const AboutBussines = () => {
     return (
         <View style={styles.container}>
-            <Label variant="title2" style={{color: '#1A242F', fontWeight: '600',}}>Acerca del negocio</Label>
+            <View style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: 10,
+            }}>
+                <Label variant="title2" style={{color: '#1A242F', fontWeight: '600',}}>Acerca del negocio</Label>
+                <OpenTag />
+            </View>
             <Image 
                 style={styles.image}
                 source={{uri: 'https://picsum.photos/200/300'}} 
