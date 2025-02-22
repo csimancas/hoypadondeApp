@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, FlatList, StyleSheet, StatusBar } from 'react-native';
 import BussinesCard from '../molecules/BussinesCard';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
@@ -6,9 +6,18 @@ import bussines from '../../../utils/data';
 import NavigationMethods from '../../../utils/navigation';
 import CategoriesList from '../molecules/CategoryList';
 import SearchBarComponent from '../molecules/SearchBar';
+import useBusinessStore from '../../../store/bussinesStore';
+
+
+
 
 const BussinesList = () => {
   const { navigateWithParams } = NavigationMethods();
+  const { fetchBusinesses, businesses, loading, error } = useBusinessStore();
+
+  useEffect(() => {
+    fetchBusinesses();
+  }, []);
 
   return (
     <SafeAreaProvider>

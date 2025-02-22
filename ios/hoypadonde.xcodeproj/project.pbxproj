@@ -14,7 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		BCA94C218E71CA1172DFE34D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
-		F117F38F2D303B6200F54CFA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F117F38E2D303B6200F54CFA /* GoogleService-Info.plist */; };
+		F1CF10142D69900A00B3A5B9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F1CF10132D69900A00B3A5B9 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +43,7 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = hoypadonde/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A0EFFBCA89A6688C5BF6F40D /* Pods_hoypadonde.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_hoypadonde.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F117F38E2D303B6200F54CFA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../llaves firebase/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F1CF10132D69900A00B3A5B9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,7 +115,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				F117F38E2D303B6200F54CFA /* GoogleService-Info.plist */,
+				F1CF10132D69900A00B3A5B9 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* hoypadonde */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* hoypadondeTests */,
@@ -238,7 +238,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				F117F38F2D303B6200F54CFA /* GoogleService-Info.plist in Resources */,
+				F1CF10142D69900A00B3A5B9 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				BCA94C218E71CA1172DFE34D /* PrivacyInfo.xcprivacy in Resources */,
 			);
