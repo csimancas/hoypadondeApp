@@ -19,22 +19,28 @@ const BussinesList = () => {
     fetchBusinesses();
   }, []);
 
+  console.log(22222, businesses);
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <SearchBarComponent onSearch={(query) => console.log(query)} />
         <CategoriesList />
         <FlatList
-          data={bussines}
-          renderItem={({ item }) => (
+          data={businesses}
+          renderItem={({ item }) => {
+            console.log(item.images);
+            return (
             <BussinesCard
               action={() => navigateWithParams('BussinesDetail', { name: item.name })}
-              image={item.images[0]}
+              image={item.images}
               name={item.name}
               location={"location"}
               opening_hours={item.opening_hours} 
             />
-          )}
+            );
+          }
+          }
           keyExtractor={item => item.id}
         />
       </SafeAreaView>

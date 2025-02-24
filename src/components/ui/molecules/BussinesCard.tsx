@@ -1,5 +1,5 @@
-import React, { act } from 'react';
-import { View, Image, StyleSheet, Pressable} from 'react-native';
+import React from 'react';
+import { View, ScrollView, Image, StyleSheet, Pressable, Dimensions } from 'react-native';
 import Label from '../atoms/Label';
 
 type OpeningHours = {
@@ -16,31 +16,44 @@ type BussinesCardProps = {
   name: string;
   location: string;
   opening_hours: OpeningHours;
-  image: string;
+  images?: string[]; // Se marca como opcional para mayor flexibilidad
   action: () => void;
 };
 
 const getTodaySchedule = (opening_hours: OpeningHours): string => {
-  // Obtener el día actual en español
   const daysOfWeek = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
   const today = new Date().getDay(); // 0 es domingo, 1 es lunes, etc.
   const todayKey = daysOfWeek[today] as keyof OpeningHours;
-
-  // Retornar el horario del día actual
   return opening_hours[todayKey] || 'Horario no disponible';
 };
 
-const BussinesCard = ({ name, location, opening_hours, image, action }: BussinesCardProps) => {
-  // Obtener el horario del día actual
+const BussinesCard = ({ name, location, opening_hours, images, action }: BussinesCardProps) => {
   const todaySchedule = getTodaySchedule(opening_hours);
+  // Si no se pasan imágenes o el array está vacío, se utiliza una imagen de muestra.
+  const effectiveImages = Array.isArray(images) && images.length > 0
+    ? images
+    : 
+    // ['https://picsum.photos/200/300']
+    ["https://drive.usercontent.google.com/download?id=11t5CCu5XcAxUNw70Jmh_c9qWaievje6q&export=view&authuser=0"];
+  const screenWidth = Dimensions.get('window').width - 20;
 
   return (
     <Pressable style={styles.container} onPress={action}>
-      <Image
-        source={{ uri: image }}
-        style={styles.image}
-        resizeMode="cover"
-        />
+      <ScrollView
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        style={[styles.imageContainer, { width: screenWidth }]}
+      >
+        {effectiveImages.map((img, index) => (
+          <Image
+            key={index}
+            source={{ uri: img }}
+            style={[styles.image, { width: screenWidth }]}
+            resizeMode="cover"
+          />
+        ))}
+      </ScrollView>
       <View style={styles.infoContainer}>
         <Label variant="title" style={styles.title}>
           {name}
@@ -69,8 +82,12 @@ const styles = StyleSheet.create({
     elevation: 3,
     margin: 10,
   },
+  imageContainer: {
+    height: 150,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
   image: {
-    width: '100%',
     height: 150,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
