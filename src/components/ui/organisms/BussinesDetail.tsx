@@ -3,10 +3,9 @@ import React, { useLayoutEffect } from 'react';
 import { View, StyleSheet, ScrollView, Share } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import OpenTag from '../atoms/OpenTag';
 import AboutBussines from '../molecules/AboutBussines';
-import AmenitiesCard from '../molecules/AmenitiesCard';
 import PromotionsList from '../molecules/PromotionsList';
+import AmenitiesCard from '../molecules/AmenitiesCard';
 import MenusList from '../molecules/MenuList';
 import Label from '../atoms/Label';
 

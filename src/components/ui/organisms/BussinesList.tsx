@@ -1,47 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet, StatusBar } from 'react-native';
 import BussinesCard from '../molecules/BussinesCard';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import bussines from '../../../utils/data';
+import useBusinessStore from '../../../store/bussinesStore';
 import NavigationMethods from '../../../utils/navigation';
 import CategoriesList from '../molecules/CategoryList';
 import SearchBarComponent from '../molecules/SearchBar';
-import useBusinessStore from '../../../store/bussinesStore';
-
-
-
 
 const BussinesList = () => {
   const { navigateWithParams } = NavigationMethods();
   const { fetchBusinesses, businesses, loading, error } = useBusinessStore();
 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredBusinesses, setFilteredBusinesses] = useState(businesses);
+
   useEffect(() => {
     fetchBusinesses();
   }, []);
 
-  console.log(22222, businesses);
+  useEffect(() => {
+    // Filtra los negocios según el nombre
+    const filtered = businesses.filter((business) =>
+      business.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredBusinesses(filtered);
+  }, [searchQuery, businesses]);
 
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <SearchBarComponent onSearch={(query) => console.log(query)} />
+        <SearchBarComponent onSearch={setSearchQuery} />
         <CategoriesList />
         <FlatList
-          data={businesses}
-          renderItem={({ item }) => {
-            console.log(item.images);
-            return (
+          data={filteredBusinesses} // Usamos los filtrados
+          renderItem={({ item }) => (
             <BussinesCard
               action={() => navigateWithParams('BussinesDetail', { name: item.name })}
               image={item.images}
               name={item.name}
-              location={"location"}
+              location={item.address}
               opening_hours={item.opening_hours} 
             />
-            );
-          }
-          }
-          keyExtractor={item => item.id}
+          )}
+          keyExtractor={(item) => item.id}
         />
       </SafeAreaView>
     </SafeAreaProvider>
@@ -53,15 +54,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 10,
     marginTop: StatusBar.currentHeight || 0,
-  },
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  title: {
-    fontSize: 32,
   },
 });
 

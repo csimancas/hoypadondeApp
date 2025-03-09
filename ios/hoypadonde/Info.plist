@@ -32,7 +32,11 @@
 		<true/>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Hoypadonde quiere usar tu ubicación,</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Hoypadonde quiere usar tu ubicación, para recomendarte los mejores negocios.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Hoypadonde quiere usar tu ubicación, para recomendarte los mejores negocios.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>EvilIcons.ttf</string>

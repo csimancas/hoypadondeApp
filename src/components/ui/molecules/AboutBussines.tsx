@@ -6,36 +6,41 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import DollarIconSVG from '../../../utils/svg/DollasIcon';
 import OpenTag from '../atoms/OpenTag';
 
-const AboutBussines = () => {
+interface AboutBussinesProps {
+    image: string;
+    name: string;
+    description: string;
+    location: string;
+    opening_hours: string;
+}
+
+
+const AboutBussines: React.FC<AboutBussinesProps> = ({ image, name,description, location, opening_hours }) => {
+    
     return (
         <View style={styles.container}>
-            <View style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: 10,
-            }}>
+            <View style={styles.aboutBussines}>
                 <Label variant="title2" style={{color: '#1A242F', fontWeight: '600',}}>Acerca del negocio</Label>
                 <OpenTag />
             </View>
-            <Image 
+            <Image
                 style={styles.image}
-                source={{uri: 'https://picsum.photos/200/300'}} 
+                source={{uri: image}} 
             />
             <Label variant="content2" style={{color: '#1A242F', marginTop: 10}}>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore delectus dolorum non! Exercitationem sunt provident, et beatae quam laborum cupiditate quo ratione. Tempore totam inventore quam? Perspiciatis temporibus vitae dignissimos.
+                {description}
             </Label>
 
             <View style={{flexDirection: 'row', marginTop: 10, alignItems: 'center'}}>
                 <AntDesing name="clockcircleo" size={16} color="#1A242F" />
                 <Label variant="content2" style={{color: '#1A242F', marginLeft: 5}}>
-                    10am - 10pm (Hoy)
+                    {opening_hours}
                 </Label>
             </View>
             <View style={{flexDirection: 'row', marginTop: 10, alignItems: 'center'}}>
             <DollarIconSVG fillColor={'#1A242F'}/>
                 <Label variant="content2" style={{color: '#1A242F', marginLeft: 5}}>
-                    10am - 10pm (Hoy)
+                    rango de precio
                 </Label>
             </View>
             <View style={{flexDirection: 'row', marginTop: 10, alignItems: 'center'}}>
@@ -47,7 +52,7 @@ const AboutBussines = () => {
             <View style={{flexDirection: 'row', marginTop: 10, alignItems: 'center'}}>
             <MaterialIcon name="directions" size={16} color={'#1A242F'} />
                 <Label variant="content2" style={{color: '#1A242F', marginLeft: 5}}>
-                    10am - 10pm (Hoy)
+                    
                 </Label>
             </View>
         </View>
@@ -61,8 +66,15 @@ const styles = StyleSheet.create({
         padding: 24,
         backgroundColor: '#FFFFFF',
     },
+    aboutBussines: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 10,
+    },
     image: {
         marginTop: 10,
+        resizeMode: 'cover',
         width: '100%',
         height: 210,
         borderRadius: 10,

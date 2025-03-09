@@ -1,42 +1,78 @@
 import React from 'react';
 import { View, ScrollView, Image, StyleSheet, Pressable, Dimensions } from 'react-native';
+import ScheduleAccordion from '../atoms/ScheduleDays';
 import Label from '../atoms/Label';
 
-type OpeningHours = {
-  lunes: string;
-  martes: string;
-  miércoles: string;
-  jueves: string;
-  viernes: string;
-  sábado: string;
-  domingo: string;
-};
 
+
+const noImage = require('../../../assets/noimageAvailable.jpg');
 type BussinesCardProps = {
   name: string;
   location: string;
   opening_hours: OpeningHours;
-  images?: string[]; // Se marca como opcional para mayor flexibilidad
+  image?: string[];
   action: () => void;
 };
 
-const getTodaySchedule = (opening_hours: OpeningHours): string => {
-  const daysOfWeek = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
-  const today = new Date().getDay(); // 0 es domingo, 1 es lunes, etc.
-  const todayKey = daysOfWeek[today] as keyof OpeningHours;
-  return opening_hours[todayKey] || 'Horario no disponible';
+type OpeningHours = {
+  [key: string]: { open: string; close: string };
 };
 
-const BussinesCard = ({ name, location, opening_hours, images, action }: BussinesCardProps) => {
-  const todaySchedule = getTodaySchedule(opening_hours);
-  // Si no se pasan imágenes o el array está vacío, se utiliza una imagen de muestra.
-  const effectiveImages = Array.isArray(images) && images.length > 0
-    ? images
-    : 
-    // ['https://picsum.photos/200/300']
-    ["https://drive.usercontent.google.com/download?id=11t5CCu5XcAxUNw70Jmh_c9qWaievje6q&export=view&authuser=0"];
-  const screenWidth = Dimensions.get('window').width - 20;
+const formatTime = (time: string): string => {
+  if (!time) return '';
+  const [hours, minutes] = time.split(':').map(Number);
+  const period = hours >= 12 ? 'PM' : 'AM';
+  const formattedHours = hours % 12 || 12; // Convierte 0 o 12 a 12, y las demás a 1-11
+  return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+};
 
+const isWithinSchedule = (open: string, close: string): boolean => {
+  const now = new Date();
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  
+  const [openHours, openMinutes] = open.split(':').map(Number);
+  const openTime = openHours * 60 + openMinutes; 
+
+  const [closeHours, closeMinutes] = close.split(':').map(Number);
+  const closeTime = closeHours * 60 + closeMinutes; 
+
+  return currentMinutes >= openTime && currentMinutes < closeTime;
+};
+
+const getTodaySchedule = (opening_hours: OpeningHours): string => {
+  const daysOfWeekEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const daysOfWeekEs = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+
+  const today = new Date().getDay();
+  const todayKeyEn = daysOfWeekEn[today];
+  const todayKeyEs = daysOfWeekEs[today];
+
+  const schedule = opening_hours[todayKeyEn];
+
+  if (!schedule || schedule.open === '' || schedule.close === '') {
+    return `Cerrado`;
+  }
+
+  const openTime = formatTime(schedule.open);
+  const closeTime = formatTime(schedule.close);
+  const status = isWithinSchedule(schedule.open, schedule.close) ? 'Abierto' : 'Cerrado';
+  
+  if (status === 'Abierto') {
+   
+    return `${openTime} - ${closeTime} ${status}`;
+  } else {
+    return `Cerrado`
+  }
+};
+
+
+
+const BussinesCard = ({ name, location, opening_hours, image, action }: BussinesCardProps) => {
+  
+  const todaySchedule = getTodaySchedule(opening_hours);
+  const screenWidth = Dimensions.get('window').width - 42;
+  const parsedAddress = `${location?.street}${location?.number}, Col.${location?.neighborhood} ${location?.city}, ${location?.state}`;
+  
   return (
     <Pressable style={styles.container} onPress={action}>
       <ScrollView
@@ -45,21 +81,26 @@ const BussinesCard = ({ name, location, opening_hours, images, action }: Bussine
         showsHorizontalScrollIndicator={false}
         style={[styles.imageContainer, { width: screenWidth }]}
       >
-        {effectiveImages.map((img, index) => (
-          <Image
-            key={index}
-            source={{ uri: img }}
-            style={[styles.image, { width: screenWidth }]}
-            resizeMode="cover"
-          />
-        ))}
+      {image?.length === 0 ? (
+        <Image
+          source={noImage}
+          style={[styles.image, { width: screenWidth }]}
+          resizeMode="cover"
+        />
+      ) : (
+      <Image
+        source={{ uri: image[1] }}
+        style={[styles.image, { width: screenWidth }]}
+        resizeMode="cover"
+      />  
+      )}
       </ScrollView>
       <View style={styles.infoContainer}>
         <Label variant="title" style={styles.title}>
           {name}
         </Label>
         <Label variant="content" style={styles.content}>
-          {location}
+          {parsedAddress}
         </Label>
         <Label variant="content" style={styles.content}>
           {todaySchedule}
