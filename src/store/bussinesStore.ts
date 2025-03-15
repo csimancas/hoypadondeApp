@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 import firestore from '@react-native-firebase/firestore';
 
-const useBusinessStore = create((set) => ({
+const useBusinessStore = create((set, get) => ({
   businesses: [],
+  selectedBusiness: null,
   loading: false,
   error: null,
 
@@ -18,14 +19,17 @@ const useBusinessStore = create((set) => ({
         set({ businesses: [], loading: false });
         return;
       }
-      const businesses = querySnapshot.docs.map(documentSnapshot => {
-        return { id: documentSnapshot.id, ...documentSnapshot.data() };
-      });
+      const businesses = querySnapshot.docs.map(documentSnapshot => ({
+        id: documentSnapshot.id,
+        ...documentSnapshot.data()
+      }));
       set({ businesses, loading: false });
     } catch (error) {
       set({ error: error.message, loading: false });
     }
-  }
+  },
+
+  setSelectedBusiness: (business) => set({ selectedBusiness: business }),
 }));
 
 export default useBusinessStore;

@@ -9,7 +9,7 @@ import SearchBarComponent from '../molecules/SearchBar';
 
 const BussinesList = () => {
   const { navigateWithParams } = NavigationMethods();
-  const { fetchBusinesses, businesses, loading, error } = useBusinessStore();
+  const { fetchBusinesses, businesses, loading, error, setSelectedBusiness } = useBusinessStore();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredBusinesses, setFilteredBusinesses] = useState(businesses);
@@ -35,7 +35,10 @@ const BussinesList = () => {
           data={filteredBusinesses} // Usamos los filtrados
           renderItem={({ item }) => (
             <BussinesCard
-              action={() => navigateWithParams('BussinesDetail', { name: item.name })}
+              action={() => {
+                setSelectedBusiness(item); // Guarda el negocio al hacer clic
+                navigateWithParams('BussinesDetail', { name: item.name });
+              }}
               image={item.images}
               name={item.name}
               location={item.address}
