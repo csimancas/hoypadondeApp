@@ -6,6 +6,7 @@ import AboutBussines from '../molecules/AboutBussines';
 import PromotionsList from '../molecules/PromotionsList';
 import AmenitiesCard from '../molecules/AmenitiesCard';
 import MenusList from '../molecules/MenuList';
+import useBusinessStore from '../../../store/bussinesStore';
 
 interface RouteParams {
   name?: string;
@@ -13,6 +14,7 @@ interface RouteParams {
 
 const BussinesDetail = () => {
   const navigation = useNavigation();
+  const { selectedBusiness } = useBusinessStore();
   const route = useRoute();
   const { name } = route.params as RouteParams;
 
@@ -44,19 +46,25 @@ const BussinesDetail = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
         <ScrollView 
           style={styles.scrollView} 
-          contentContainerStyle={styles.contentContainer} 
-          keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <AboutBussines />
-          <AmenitiesCard />
-          <PromotionsList />
-          <MenusList style={styles.lastItem} /> 
+          <AboutBussines 
+            address={selectedBusiness.address}  
+            categories={selectedBusiness.category}
+            description={selectedBusiness.description} 
+            images={selectedBusiness.images} 
+            opening_hours={selectedBusiness.opening_hours}
+          />
+          <AmenitiesCard data={selectedBusiness.amenities}/>
+          {selectedBusiness.promotions?.length > 0 && (
+            <PromotionsList data={selectedBusiness.promotions}/>
+          )}
+          {selectedBusiness.menus?.length > 0 && (  
+            <MenusList data={selectedBusiness.menus} /> 
+          )}
         </ScrollView>
-      </View>
     </SafeAreaView>
   );
 };
@@ -66,18 +74,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F0F0F0',
   },
-  container: {
-    flex: 1,
-  },
-  scrollView: {
-    flex: 1,
-  },
   contentContainer: {
-    flexGrow: 1,
-    paddingBottom: 50, // Espacio extra al final para evitar corte
+    paddingBottom: 50,
   },
   lastItem: {
-    marginBottom: 50, // Asegurar que el último elemento no se corte
+    marginBottom: 50,
   },
 });
 

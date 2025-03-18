@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     borderRadius: 10,
-    overflow: 'hidden',
     alignItems: 'center',
   },
   image: {

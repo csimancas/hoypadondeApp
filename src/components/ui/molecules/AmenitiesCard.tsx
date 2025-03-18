@@ -1,39 +1,31 @@
 import React from "react";
 import { View, FlatList } from "react-native";
-import { Text, List, Button } from "react-native-paper";
+import { Text, Button } from "react-native-paper";
+import Label from "../atoms/Label";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-const features = [
-  { id: "1", label: "Takeaway available" },
-  { id: "2", label: "Wifi available" },
-  { id: "3", label: "Child friendly" },
-  { id: "4", label: "Table reservation" },
-  { id: "5", label: "Smoking area" },
-  { id: "6", label: "Indoor and outdoor" },
-];
+interface MoreInformationProps {
+  data: string[];
+}
 
-const MoreInformation = () => {
+const MoreInformation = ({ data }: MoreInformationProps) => {
   return (
     <View style={styles.container}>
       <Text variant="titleMedium" style={{ fontWeight: "bold", marginBottom: 8 }}>
-        More Information
+        Más información
       </Text>
       <FlatList
-        data={features}
+        data={data}
         numColumns={2}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => index.toString()}
+        columnWrapperStyle={{ justifyContent: "space-between" }} // Separa las columnas
         renderItem={({ item }) => (
-          <List.Item
-            title={item.label}
-            left={() => <List.Icon icon="check-circle-outline" color="green" />}
-            style={{ flex: 1 }}
-          />
+          <View style={{ flexDirection: "row", alignItems: "center", width: "48%", marginTop:10 }}>
+            <MaterialCommunityIcons name="check-circle-outline" color="green" size={20} style={{ marginRight: 4 }} />
+            <Label variant="content2">{item}</Label>
+          </View>
         )}
       />
-      <View style={{ alignItems: "center", marginTop: 8 }}>
-        <Button mode="text" onPress={() => console.log("Ver todos presionado")}>
-          Ver todos
-        </Button>
-      </View>
     </View>
   );
 };

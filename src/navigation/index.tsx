@@ -72,11 +72,11 @@ function HomeStack() {
 
 function RootStack() {
   return (
-    <Stack.Navigator initialRouteName='Home'>
+    <Stack.Navigator initialRouteName='Splash'>
       <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
       <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} />
       <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Home" component={HomeStack} options={{ headerShown: false }} />
+      <Stack.Screen name="LogInRouter" component={HomeStack} options={{ headerShown: false }} />
       <Stack.Screen name="BussinesDetail" component={BussinesDetail} />
     </Stack.Navigator>
   );

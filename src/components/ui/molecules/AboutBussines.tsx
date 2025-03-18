@@ -7,28 +7,28 @@ import DollarIconSVG from '../../../utils/svg/DollasIcon';
 import OpenTag from '../atoms/OpenTag';
 import useBusinessStore from '../../../store/bussinesStore';
 import BussinesImgCarousel from '../atoms/BussinesImgCarousel';
+import commonFunctions from '../../../utils/common';
 
 interface AboutBussinesProps {
-    name: string;
+    address: {
+        street: string,
+        number: string,
+        neighborhood: string,
+        city: string,
+        state: string;
+    }
     description: string;
-    location: string;
     opening_hours: string;
+    images: [];
+    categories: string; 
 }
 
 const { width } = Dimensions.get('window');
 
-const AboutBussines: React.FC<AboutBussinesProps> = ({ name, description, location, opening_hours }) => {
-    const { selectedBusiness } = useBusinessStore();
-    const scrollX = useRef(new Animated.Value(0)).current;
-    const [activeIndex, setActiveIndex] = useState(0);
-
-    const handleScroll = (event: any) => {
-        const contentOffsetX = event.nativeEvent.contentOffset.x;
-        const index = Math.round(contentOffsetX / width);
-        setActiveIndex(index);
-    };
-
-    const parsedAddress = `${selectedBusiness.address.street} ${selectedBusiness.address.number} ${selectedBusiness.address.neighborhood}, ${selectedBusiness.address.city}, ${selectedBusiness.address.state}`;
+const AboutBussines: React.FC<AboutBussinesProps> = ({ address ,description, opening_hours, images, categories }) => {
+    const {getTodaySchedule} = commonFunctions();
+    const todaySchedule = getTodaySchedule(opening_hours);
+    const parsedAddress = `${address.street} ${address.number} ${address.neighborhood}, ${address.city}, ${address.state}`;
 
     return (
         <View style={styles.container}>
@@ -37,39 +37,13 @@ const AboutBussines: React.FC<AboutBussinesProps> = ({ name, description, locati
                 <OpenTag />
             </View>
 
-            <BussinesImgCarousel img={selectedBusiness.images}/>
+            <BussinesImgCarousel img={images}/>
 
-            {/* <ScrollView
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                snapToAlignment="center"
-                snapToInterval={width}
-                decelerationRate="fast"
-                onScroll={Animated.event(
-                    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                    { useNativeDriver: false, listener: handleScroll }
-                )}
-                scrollEventThrottle={16}
-            >
-                {selectedBusiness.images.map((img, index) => (
-                    <View style={{padding: 3}}>
-                        <Image key={index} resizeMode='cover' source={{ uri: img }} style={styles.image} />
-                    </View>
-                ))}
-            </ScrollView>
-
-            <View style={styles.pagination}>
-                {selectedBusiness.images.map((_, index) => (
-                    <View key={index} style={[styles.dot, activeIndex === index && styles.activeDot]} />
-                ))}
-            </View> */}
-
-            <Label variant="content2" style={styles.description}>{selectedBusiness.description}</Label>
+            <Label variant="content2" style={styles.description}>{description}</Label>
 
             <View style={styles.row}>
                 <AntDesign name="clockcircleo" size={16} color="#1A242F" />
-                <Label variant="content2" style={styles.text}>{opening_hours}</Label>
+                <Label variant="content2" style={styles.text}>{todaySchedule}</Label>
             </View>
 
             <View style={styles.row}>
@@ -79,7 +53,7 @@ const AboutBussines: React.FC<AboutBussinesProps> = ({ name, description, locati
 
             <View style={styles.row}>
                 <MaterialIcon name="category" size={16} color={'#1A242F'} />
-                <Label variant="content2" style={styles.text}>{selectedBusiness.category}</Label>
+                <Label variant="content2" style={styles.text}>{categories}</Label>
             </View>
 
             <View style={styles.row}>

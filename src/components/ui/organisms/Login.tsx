@@ -21,6 +21,7 @@ const LogIn = () => {
       />
       <TextInput
         label="Contraseña"
+        secureTextEntry
         style={{width: '100%', height: 50, marginTop: 20}}
       />
       <Button
@@ -36,7 +37,7 @@ const LogIn = () => {
 				color={colors.darkTheme.colors.text}
 				backgroundColor={colors.darkTheme.colors.primary}
 				action={() => {
-					navigateTo('Home');
+					navigateTo('LogInRouter');
         }}
 			/>
       <View style={{flexDirection: 'row', marginTop: 20, justifyContent:'flex-end',}}>
