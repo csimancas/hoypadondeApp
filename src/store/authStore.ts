@@ -127,6 +127,10 @@ const useAuthStore = create<AuthState>((set) => ({
 
     return () => unsubscribe(); // Desuscribirse cuando el componente se desmonte
   },
+
+  saveBussinessToFavorites: () => {
+    console.log('added')
+  },
 }));
 
 export default useAuthStore;

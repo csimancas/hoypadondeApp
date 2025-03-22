@@ -3,12 +3,20 @@ import { View, ScrollView, Image, StyleSheet, Pressable, Dimensions } from 'reac
 import ScheduleAccordion from '../atoms/ScheduleDays';
 import Label from '../atoms/Label';
 import commonFunctions from '../../../utils/common';
+import AddFavBusiness from '../atoms/AddFavBussines';
 
 
 const noImage = require('../../../assets/noimageAvailable.jpg');
 type BussinesCardProps = {
+  bussinesId: string;
   name: string;
-  location: string;
+  location: {
+    street: string;
+    number: string;
+    neighborhood: string;
+    city: string;
+    state: string;
+  },
   opening_hours: OpeningHours;
   image?: string[];
   action: () => void;
@@ -20,7 +28,7 @@ type OpeningHours = {
 
 const { getTodaySchedule} = commonFunctions();
 
-const BussinesCard = ({ name, location, opening_hours, image, action }: BussinesCardProps) => {
+const BussinesCard = ({ name, location, opening_hours, image, action, bussinesId }: BussinesCardProps) => {
   
   const todaySchedule = getTodaySchedule(opening_hours);
   const screenWidth = Dimensions.get('window').width - 42;
@@ -34,6 +42,7 @@ const BussinesCard = ({ name, location, opening_hours, image, action }: Bussines
         showsHorizontalScrollIndicator={false}
         style={[styles.imageContainer, { width: screenWidth }]}
       >
+      <AddFavBusiness businessId={bussinesId}/>
       {image?.length === 0 ? (
         <Image
           source={noImage}

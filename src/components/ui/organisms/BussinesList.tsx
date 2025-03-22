@@ -54,6 +54,7 @@ const BussinesList = () => {
                 setSelectedBusiness(item); // Guarda el negocio al hacer clic
                 navigateWithParams('BussinesDetail', { name: item.name });
               }}
+              bussinesId={item.id}
               image={item.images}
               name={item.name}
               location={item.address}
