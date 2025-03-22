@@ -47,7 +47,7 @@ const BussinesDetail = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
         <ScrollView 
-          style={styles.scrollView} 
+          // style={styles.scrollView} 
           showsVerticalScrollIndicator={false}
         >
           <AboutBussines 

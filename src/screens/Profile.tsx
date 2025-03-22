@@ -1,11 +1,31 @@
 import React from 'react';
 import { View, Text, Button } from 'react-native';
-import { WebView } from 'react-native-webview';
+import useAuthStore from '../store/authStore';
+import NavigationMethods from '../utils/navigation';
 
 
 const Home = () => {
+  const { navigateTo } = NavigationMethods();
+  const { logoutUser } = useAuthStore();
+
+  const handleLogout = () => {
+    try {
+      logoutUser().then(() => {
+        navigateTo('Login');
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
-    <WebView source={{ uri: 'https://drive.google.com/file/d/1VpZ_yPoUbfEfIOg2EKWJnCp-kdV1A3s6/view?usp=drive_link' }} style={{ flex: 1 }} />
+   <View>
+    <Button
+     onPress={() => logoutUser()}
+      title="Learn More"
+      color="#841584"
+      accessibilityLabel="Learn more about this purple button"
+    />
+   </View>
     
     // <View>
     //   <Text>Profile</Text>

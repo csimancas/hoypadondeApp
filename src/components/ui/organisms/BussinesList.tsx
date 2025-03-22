@@ -6,10 +6,15 @@ import useBusinessStore from '../../../store/bussinesStore';
 import NavigationMethods from '../../../utils/navigation';
 import CategoriesList from '../molecules/CategoryList';
 import SearchBarComponent from '../molecules/SearchBar';
+import useAuthStore from '../../../store/authStore';
+import Label from '../atoms/Label';
 
 const BussinesList = () => {
   const { navigateWithParams } = NavigationMethods();
   const { fetchBusinesses, businesses, loading, error, setSelectedBusiness } = useBusinessStore();
+  const { user } = useAuthStore();
+
+  console.log(user)
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredBusinesses, setFilteredBusinesses] = useState(businesses);
@@ -26,9 +31,19 @@ const BussinesList = () => {
     setFilteredBusinesses(filtered);
   }, [searchQuery, businesses]);
 
+
+  const UserLabel = () => {
+    return (
+      <View style={{ paddingHorizontal: 16 }}>
+        <Label>Bienvenido {user?.nombre}!</Label>
+      </View>
+      
+    );
+  };
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
+        <UserLabel/>
         <SearchBarComponent onSearch={setSearchQuery} />
         <CategoriesList />
         <FlatList
