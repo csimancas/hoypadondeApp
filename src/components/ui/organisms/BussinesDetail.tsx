@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react';
-import { View, StyleSheet, ScrollView, Share, SafeAreaView } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, Share, SafeAreaView, Pressable } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AboutBussines from '../molecules/AboutBussines';
@@ -17,6 +17,7 @@ const BussinesDetail = () => {
   const { selectedBusiness } = useBusinessStore();
   const route = useRoute();
   const { name } = route.params as RouteParams;
+  
 
   const shareBusiness = async () => {
     try {
@@ -39,6 +40,11 @@ const BussinesDetail = () => {
           style={{ marginRight: 15 }}
           onPress={shareBusiness}
         />
+      ),
+      headerLeft: () => (
+        <Pressable onPress={() => navigation.navigate('HomeStack')} style={{marginRight: 20 }}>
+          <Icon name="arrow-back" size={24} color="black" />
+        </Pressable>
       ),
       headerTransparent: false,
     });

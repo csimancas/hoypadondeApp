@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -13,8 +13,6 @@ import Map from '../screens/Map';
 import LogIn from '../screens/LogInScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import BussinesDetail from '../screens/BussinesDetailScreen';
-
-import useAuthStore from '../store/authStore';
 
 import colors from '../utils/colors';
 
@@ -71,14 +69,6 @@ function HomeStack() {
   );
 }
 
-function AuthUser () {
-  return (
-  <Stack.Navigator initialRouteName='LogInRouter'>
-    <Stack.Screen name="LogInRouter" component={HomeStack} options={{ headerShown: false }} />
-    <Stack.Screen name="BussinesDetail" component={BussinesDetail} />
-  </Stack.Navigator> 
-  )
-}
 
 function RootStack() {
   return (
@@ -86,27 +76,16 @@ function RootStack() {
       <Stack.Screen name="Splash" component={Splash} options={{ headerShown: false }} />
       <Stack.Screen name="LogIn" component={LogIn} options={{ headerShown: false }} />
       <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-      
+      <Stack.Screen name="BussinesDetail" component={BussinesDetail} />
+      <Stack.Screen name="HomeStack" component={HomeStack} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
 
 const Navigation = () => {
-  const { user, loading, checkUserSession } = useAuthStore();
-
-
-  useEffect(() =>{
-    checkUserSession(); 
-  }, []);
-
-
   return (
     <NavigationContainer>
-      {user ? (
-        <AuthUser />
-      ) :  (
-        <RootStack />
-      )}
+      <RootStack />
     </NavigationContainer>
   );
 };

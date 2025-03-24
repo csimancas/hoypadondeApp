@@ -8,6 +8,9 @@ import OpenTag from '../atoms/OpenTag';
 import useBusinessStore from '../../../store/bussinesStore';
 import BussinesImgCarousel from '../atoms/BussinesImgCarousel';
 import commonFunctions from '../../../utils/common';
+import AmenitiesCard from '../molecules/AmenitiesCard';
+import PromotionsList from '../molecules/PromotionsList';
+import MenusList from '../molecules/MenuList';
 
 interface AboutBussinesProps {
     address: {
@@ -20,7 +23,7 @@ interface AboutBussinesProps {
     description: string;
     opening_hours: string;
     images: [];
-    categories: string; 
+    categories: string;
 }
 
 const { width } = Dimensions.get('window');

@@ -14,7 +14,6 @@ const BussinesList = () => {
   const { fetchBusinesses, businesses, loading, error, setSelectedBusiness } = useBusinessStore();
   const { user } = useAuthStore();
 
-  console.log(user)
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredBusinesses, setFilteredBusinesses] = useState(businesses);
@@ -24,7 +23,6 @@ const BussinesList = () => {
   }, []);
 
   useEffect(() => {
-    // Filtra los negocios según el nombre
     const filtered = businesses.filter((business) =>
       business.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -43,7 +41,7 @@ const BussinesList = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
-        <UserLabel/>
+        
         <SearchBarComponent onSearch={setSearchQuery} />
         <CategoriesList />
         <FlatList

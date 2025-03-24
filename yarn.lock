@@ -3286,6 +3286,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native/normalize-color@npm:*":
+  version: 2.1.0
+  resolution: "@react-native/normalize-color@npm:2.1.0"
+  checksum: 8ccbd40b3c7629f1dc97b3e9aadd95fd3507fcf2e37535a6299a70436ab891c34cbdc4240b07380553d6e85dd909e23d5773b5be1da2906b026312e0b0768838
+  languageName: node
+  linkType: hard
+
 "@react-native/normalize-colors@npm:0.76.5":
   version: 0.76.5
   resolution: "@react-native/normalize-colors@npm:0.76.5"
@@ -4972,6 +4979,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"crypto-js@npm:4.2.0":
+  version: 4.2.0
+  resolution: "crypto-js@npm:4.2.0"
+  checksum: f051666dbc077c8324777f44fbd3aaea2986f198fe85092535130d17026c7c2ccf2d23ee5b29b36f7a4a07312db2fae23c9094b644cc35f7858b1b4fcaf27774
+  languageName: node
+  linkType: hard
+
 "css-select@npm:^5.1.0":
   version: 5.1.0
   resolution: "css-select@npm:5.1.0"
@@ -5152,6 +5166,17 @@ __metadata:
   version: 2.0.0
   resolution: "depd@npm:2.0.0"
   checksum: abbe19c768c97ee2eed6282d8ce3031126662252c58d711f646921c9623f9052e3e1906443066beec1095832f534e57c523b7333f8e7e0d93051ab6baef5ab3a
+  languageName: node
+  linkType: hard
+
+"deprecated-react-native-prop-types@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "deprecated-react-native-prop-types@npm:2.3.0"
+  dependencies:
+    "@react-native/normalize-color": "*"
+    invariant: "*"
+    prop-types: "*"
+  checksum: d14f4be1dfe780a7fa9197a31b4a9a2b409c8cf1bf677713fd92d06733dee1043578662d1a8858541cf06164ae91d295db6e595f29bf13e808d9fb37bc58c90b
   languageName: node
   linkType: hard
 
@@ -6506,8 +6531,10 @@ __metadata:
     react: 18.3.1
     react-native: 0.76.5
     react-native-gesture-handler: ^2.24.0
+    react-native-image-zoom-viewer: ^3.0.1
     react-native-maps: ^1.20.1
     react-native-paper: ^5.12.5
+    react-native-pdf: ^6.7.7
     react-native-progress: ^5.0.1
     react-native-reanimated: ^3.17.1
     react-native-reanimated-carousel: ^4.0.2
@@ -6691,7 +6718,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"invariant@npm:2.2.4, invariant@npm:^2.2.4":
+"invariant@npm:*, invariant@npm:2.2.4, invariant@npm:^2.2.4":
   version: 2.2.4
   resolution: "invariant@npm:2.2.4"
   dependencies:
@@ -9239,7 +9266,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:*, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -9383,6 +9410,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-native-image-pan-zoom@npm:^2.1.12":
+  version: 2.1.12
+  resolution: "react-native-image-pan-zoom@npm:2.1.12"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 826ed254d27b079cb985b63c65d0f504f11987b68ae71bac0e1c0e99dc24d5816fc9b8d053eb04737c60c018ad520a1e9c4b99af26952646ccabe9fc2b3bd64f
+  languageName: node
+  linkType: hard
+
+"react-native-image-zoom-viewer@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "react-native-image-zoom-viewer@npm:3.0.1"
+  dependencies:
+    react-native-image-pan-zoom: ^2.1.12
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: bd32e382100fece8f815bacabe276f8f05a7c1edc1ff8485149fd863780de7d11a1a8241b837adad957e53ce1e19ef249410fdb312bc43fb7071b57fb879b78d
+  languageName: node
+  linkType: hard
+
 "react-native-is-edge-to-edge@npm:1.1.6":
   version: 1.1.6
   resolution: "react-native-is-edge-to-edge@npm:1.1.6"
@@ -9422,6 +9471,20 @@ __metadata:
     react-native-safe-area-context: "*"
     react-native-vector-icons: "*"
   checksum: ef16fbb57986f09f2080e98ddb7977c494d6accb36767101de32199849bba8764e2bcd528a5d1c08940f4430cb86dabb6baaf5b33a539670221cbbfcc01f2d5e
+  languageName: node
+  linkType: hard
+
+"react-native-pdf@npm:^6.7.7":
+  version: 6.7.7
+  resolution: "react-native-pdf@npm:6.7.7"
+  dependencies:
+    crypto-js: 4.2.0
+    deprecated-react-native-prop-types: ^2.3.0
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-blob-util: ">=0.13.7"
+  checksum: ee6c86016596ecb386f869c435d4af76537c816d1183b5baf4c49326ff46226800c1e5186e3a6a213862adba2235970b109ff8074c5fb49703fc0cad78d5cc8e
   languageName: node
   linkType: hard
 

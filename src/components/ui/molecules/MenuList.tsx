@@ -1,21 +1,44 @@
-import React from "react";
-import { View, FlatList, StyleSheet, Dimensions, Image } from "react-native";
-import { Text } from "react-native-paper";
+import React, { useState } from "react";
+import {
+  View,
+  FlatList,
+  StyleSheet,
+  Dimensions,
+  Image,
+  Modal,
+  Pressable,
+  Text,
+} from "react-native";
+import Label from '../atoms/Label';
+// import Pdf from 'react-native-pdf'; // Instala esta librería para manejar PDFs
+import ImageViewer from 'react-native-image-zoom-viewer'; // Para el zoom en imágenes
 
 const { width } = Dimensions.get("window");
 const CARD_WIDTH = width * 0.4; // Cada tarjeta ocupa el 40% del ancho de la pantalla
 
 interface MenuListProps {
- data: []; 
+  data: [];
 }
 
-const MenusList = ({data} : MenuListProps) => {
+const MenusList = ({ data }: MenuListProps) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState("");
+
+  // Función para abrir el modal con la imagen o PDF
+  const openModal = (item) => {
+    setSelectedItem(item);
+    setModalVisible(true);
+  };
+
+  // Función para cerrar el modal
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedItem("");
+  };
+
   return (
     <View style={styles.container}>
-      <Text variant="titleLarge" style={styles.title}>
-        Menus
-      </Text>
-      
+      <Label variant="title">Menus</Label>
       <FlatList
         data={data}
         keyExtractor={(item) => item.id}
@@ -23,11 +46,48 @@ const MenusList = ({data} : MenuListProps) => {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.listContainer}
         renderItem={({ item }) => (
+          <Pressable onPress={() => openModal(item)}>
             <View style={styles.card}>
               <Image source={{ uri: item }} style={styles.image} />
             </View>
+          </Pressable>
         )}
       />
+
+      {/* Modal para mostrar la imagen o PDF al 100% */}
+      <Modal
+        visible={modalVisible}
+        transparent={false} // Cambia a false para que ocupe toda la pantalla
+        animationType="slide"
+        onRequestClose={closeModal}
+      >
+        <View style={styles.modalContainer}>
+          {/* Botón para cerrar el modal */}
+          <Pressable onPress={closeModal} style={styles.closeButton}>
+            <Text style={styles.closeButtonText}>Cerrar</Text>
+          </Pressable>
+
+          {/* Mostrar imagen o PDF */}
+          {selectedItem.endsWith(".pdf") ? (
+            <Pdf
+              source={{ uri: selectedItem }}
+              style={styles.pdf}
+            />
+          ) : (
+            <ImageViewer
+              imageUrls={[{ url: selectedItem }]} // Pasa la URL de la imagen
+              enableImageZoom={true} // Habilita el zoom
+              enableSwipeDown={true} // Permite cerrar el modal deslizando hacia abajo
+              onSwipeDown={closeModal} // Cierra el modal al deslizar hacia abajo
+              renderHeader={() => (
+                <Pressable onPress={closeModal} style={styles.closeButton}>
+                  <Text style={styles.closeButtonText}>Cerrar</Text>
+                </Pressable>
+              )}
+            />
+          )}
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -37,7 +97,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 20,
     marginTop: 10,
-    backgroundColor: "#fff",    
+    backgroundColor: "#fff",
     paddingHorizontal: 24,
   },
   title: {
@@ -47,7 +107,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingHorizontal: 8,
-    marginBottom: 20, 
+    marginBottom: 20,
   },
   card: {
     width: 120,
@@ -63,27 +123,25 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
   },
-  badgeContainer: {
+  modalContainer: {
+    flex: 1, // Ocupa toda la pantalla
+    backgroundColor: "#000", // Fondo negro para mejor contraste
+  },
+  closeButton: {
     position: "absolute",
-    top: 8,
-    left: 8,
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    borderRadius: 8,
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    flexDirection: "row",
-    alignItems: "center",
+    top: 40, // Ajusta la posición vertical
+    right: 20, // Ajusta la posición horizontal
+    zIndex: 1, // Asegura que el botón esté por encima del contenido
+    backgroundColor: "rgba(255, 255, 255, 0.8)", // Fondo semitransparente
+    padding: 10,
+    borderRadius: 20,
   },
-  badgeText: {
-    color: "#fff",
-    marginLeft: 4,
-    fontSize: 12,
+  closeButtonText: {
+    color: "#000",
+    fontSize: 16,
   },
-  menuTitle: {
-    textAlign: "center",
-    fontSize: 14,
-    marginTop: 8,
-    fontWeight: "bold",
+  pdf: {
+    flex: 1, // Ocupa todo el espacio disponible
   },
 });
 

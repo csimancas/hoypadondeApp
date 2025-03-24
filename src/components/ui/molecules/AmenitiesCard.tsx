@@ -4,6 +4,7 @@ import { Text, Button } from "react-native-paper";
 import Label from "../atoms/Label";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
+
 interface MoreInformationProps {
   data: string[];
 }
@@ -11,9 +12,7 @@ interface MoreInformationProps {
 const MoreInformation = ({ data }: MoreInformationProps) => {
   return (
     <View style={styles.container}>
-      <Text variant="titleMedium" style={{ fontWeight: "bold", marginBottom: 8 }}>
-        Más información
-      </Text>
+      <Label variant="title">Más información</Label>
       <FlatList
         data={data}
         numColumns={2}

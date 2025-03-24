@@ -24,7 +24,7 @@ const LogIn = () => {
     setLoading(true);
     try {
       await loginUser(email, password);
-      navigateTo('LogInRouter');
+      navigateTo('HomeStack');
     } catch (error: any) {
       Alert.alert('Error', error.message);
     } finally {

@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { View, FlatList, StyleSheet, Dimensions, Animated } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
 import PromoCard from "../atoms/PromotionCard";
+import Label from "../atoms/Label";
 
 const { width } = Dimensions.get("window");
 
@@ -12,10 +13,10 @@ interface PromotionsListProps {
 const PromotionsList = ({ data }: PromotionsListProps) => {
   const scrollX = useRef(new Animated.Value(0)).current;
 
-  console.log(3333, JSON.stringify(data));
 
   return (
     <View style={styles.container}>
+      <Label variant="title">Promociones</Label>
       <Carousel
         width={width}
         height={140}
