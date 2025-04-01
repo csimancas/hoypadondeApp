@@ -1,6 +1,14 @@
-import React, { useLayoutEffect } from 'react';
-import { Text, View, StyleSheet, ScrollView, Share, SafeAreaView, Pressable } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import React, {useLayoutEffect} from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  ScrollView,
+  Share,
+  SafeAreaView,
+  Pressable,
+} from 'react-native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AboutBussines from '../molecules/AboutBussines';
 import PromotionsList from '../molecules/PromotionsList';
@@ -14,11 +22,11 @@ interface RouteParams {
 
 const BussinesDetail = () => {
   const navigation = useNavigation();
-  const { selectedBusiness } = useBusinessStore();
+  const {selectedBusiness} = useBusinessStore();
   const route = useRoute();
-  const { name } = route.params as RouteParams;
-  
+  const {name} = route.params as RouteParams;
 
+  console.log(selectedBusiness);
   const shareBusiness = async () => {
     try {
       await Share.share({
@@ -37,12 +45,14 @@ const BussinesDetail = () => {
           name="share-outline"
           size={24}
           color="black"
-          style={{ marginRight: 15 }}
+          style={{marginRight: 15}}
           onPress={shareBusiness}
         />
       ),
       headerLeft: () => (
-        <Pressable onPress={() => navigation.navigate('HomeStack')} style={{marginRight: 20 }}>
+        <Pressable
+          onPress={() => navigation.navigate('HomeStack')}
+          style={{marginRight: 20}}>
           <Icon name="arrow-back" size={24} color="black" />
         </Pressable>
       ),
@@ -52,25 +62,25 @@ const BussinesDetail = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-        <ScrollView 
-          // style={styles.scrollView} 
-          showsVerticalScrollIndicator={false}
-        >
-          <AboutBussines 
-            address={selectedBusiness.address}  
-            categories={selectedBusiness.category}
-            description={selectedBusiness.description} 
-            images={selectedBusiness.images} 
-            opening_hours={selectedBusiness.opening_hours}
-          />
-          <AmenitiesCard data={selectedBusiness.amenities}/>
-          {selectedBusiness.promotions?.length > 0 && (
-            <PromotionsList data={selectedBusiness.promotions}/>
-          )}
-          {selectedBusiness.menus?.length > 0 && (  
-            <MenusList data={selectedBusiness.menus} /> 
-          )}
-        </ScrollView>
+      <ScrollView
+        // style={styles.scrollView}
+        showsVerticalScrollIndicator={false}>
+        <AboutBussines
+          address={selectedBusiness.address}
+          averageTicket={selectedBusiness.averageTicket}
+          categories={selectedBusiness.category}
+          description={selectedBusiness.description}
+          images={selectedBusiness.images}
+          opening_hours={selectedBusiness.opening_hours}
+        />
+        <AmenitiesCard data={selectedBusiness.amenities} />
+        {selectedBusiness.promotions?.length > 0 && (
+          <PromotionsList data={selectedBusiness.promotions} />
+        )}
+        {selectedBusiness.menus?.length > 0 && (
+          <MenusList data={selectedBusiness.menus} />
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 };

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Alert, View, Image, StyleSheet, Pressable } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import React, {useState} from 'react';
+import {Alert, View, Image, StyleSheet, Pressable} from 'react-native';
+import {TextInput} from 'react-native-paper';
 import NavigationMethods from '../../../utils/navigation';
 import ScreenContainer from '../atoms/ScreenContainer';
 import Label from '../atoms/Label';
@@ -9,18 +9,18 @@ import colors from '../../../utils/colors';
 import useAuthStore from '../../../store/authStore';
 
 const LogIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('jose.cuetos31@gmail.com');
+  const [password, setPassword] = useState('123456');
   const [loading, setLoading] = useState(false); // Estado de carga
-  const { navigateTo } = NavigationMethods();
-  const { loginUser } = useAuthStore();
+  const {navigateTo} = NavigationMethods();
+  const {loginUser} = useAuthStore();
 
   const handleLogin = async () => {
     if (!email || !password) {
       Alert.alert('Error', 'Por favor, ingresa tu correo y contraseña.');
       return;
     }
-    
+
     setLoading(true);
     try {
       await loginUser(email, password);
@@ -35,9 +35,9 @@ const LogIn = () => {
   return (
     <ScreenContainer>
       <View style={styles.logoContainer}>
-        <Image 
-          source={require('../../../assets/logo_nombre.png')} 
-          style={styles.image} 
+        <Image
+          source={require('../../../assets/logo_nombre.png')}
+          style={styles.image}
           resizeMode="contain"
         />
       </View>

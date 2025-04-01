@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Image, StyleSheet} from 'react-native';
 import NavigationMethods from '../utils/navigation';
 import ScreenContainer from '../components/ui/atoms/ScreenContainer';
 import useAuthStore from '../store/authStore';
 
 const Splash = () => {
-  const { user, checkUserSession } = useAuthStore();
-  const { navigateTo } = NavigationMethods();
+  const {user, checkUserSession} = useAuthStore();
+  const {navigateTo} = NavigationMethods();
 
   useEffect(() => {
     checkUserSession();
