@@ -1,14 +1,14 @@
 import React from 'react';
-import { View, Image, Dimensions, StyleSheet } from 'react-native';
+import {View, Image, Dimensions, StyleSheet} from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 interface BussinesDetailProps {
-    img: string [];
+  img: string[];
 }
 
-const BussinesImgCarousel= ({img} : BussinesDetailProps) => {
+const BussinesImgCarousel = ({img}: BussinesDetailProps) => {
   return (
     <View style={styles.container}>
       <Carousel
@@ -17,9 +17,13 @@ const BussinesImgCarousel= ({img} : BussinesDetailProps) => {
         height={250}
         data={img}
         scrollAnimationDuration={1000}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <View style={styles.imageContainer}>
-            <Image source={{uri: item}} style={styles.image} resizeMode="cover" />
+            <Image
+              source={{uri: item}}
+              style={styles.image}
+              resizeMode="cover"
+            />
           </View>
         )}
       />

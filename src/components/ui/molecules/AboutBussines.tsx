@@ -12,12 +12,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import DollarIconSVG from '../../../utils/svg/DollasIcon';
 import OpenTag from '../atoms/OpenTag';
-import useBusinessStore from '../../../store/bussinesStore';
 import BussinesImgCarousel from '../atoms/BussinesImgCarousel';
 import commonFunctions from '../../../utils/common';
-import AmenitiesCard from '../molecules/AmenitiesCard';
-import PromotionsList from '../molecules/PromotionsList';
-import MenusList from '../molecules/MenuList';
 
 interface AboutBussinesProps {
   address: {
