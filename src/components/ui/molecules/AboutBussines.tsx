@@ -40,8 +40,9 @@ const AboutBussines: React.FC<AboutBussinesProps> = ({
   images,
   categories,
 }) => {
-  const {getTodaySchedule} = commonFunctions();
+  const {getTodaySchedule, isBusinessOpenNow} = commonFunctions();
   const todaySchedule = getTodaySchedule(opening_hours);
+  const isOpen = isBusinessOpenNow(opening_hours);
   const parsedAddress = `${address.street} ${address.number} ${address.neighborhood}, ${address.city}, ${address.state}`;
 
   return (
@@ -50,7 +51,7 @@ const AboutBussines: React.FC<AboutBussinesProps> = ({
         <Label variant="title2" style={styles.title}>
           Acerca del negocio
         </Label>
-        <OpenTag />
+        <OpenTag open={isOpen} />
       </View>
 
       <BussinesImgCarousel img={images} />

@@ -63,7 +63,8 @@ const BussinesDetail = () => {
 
   const promotions = selectedBusiness.promotions || [];
   const menus = selectedBusiness.menus || [];
-  console.log(menus);
+
+  console.log(selectedBusiness.opening_hours);
   return (
     <SafeAreaView style={styles.safeArea} edges={['bottom']}>
       <ScrollView
