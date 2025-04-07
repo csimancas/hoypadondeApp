@@ -24,15 +24,9 @@ import useBusinessStore from '../../../store/bussinesStore';
 
 const {width, height} = Dimensions.get('window');
 
-interface RouteParams {
-  name?: string;
-}
-
 const BussinesDetail = () => {
   const navigation = useNavigation();
   const {selectedBusiness} = useBusinessStore();
-  const route = useRoute();
-  const {name} = route.params as RouteParams;
 
   const shareBusiness = async () => {
     try {
@@ -46,7 +40,7 @@ const BussinesDetail = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: name || 'Detalles del negocio',
+      title: selectedBusiness.name || 'Detalles del negocio',
       headerRight: () => (
         <Icon
           name="share-outline"
@@ -65,11 +59,11 @@ const BussinesDetail = () => {
       ),
       headerTransparent: false,
     });
-  }, [navigation, name, shareBusiness]);
+  }, [navigation, shareBusiness]);
 
   const promotions = selectedBusiness.promotions || [];
   const menus = selectedBusiness.menus || [];
-
+  console.log(menus);
   return (
     <SafeAreaView style={styles.safeArea} edges={['bottom']}>
       <ScrollView
