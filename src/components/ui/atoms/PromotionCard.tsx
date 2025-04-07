@@ -21,7 +21,6 @@ interface PromoCardProps {
   place_name?: string;
 }
 
-// Mapeo de días de la semana en español a sus iniciales
 const DAYS_MAPPING = {
   Lunes: 'L',
   Martes: 'M',
@@ -40,10 +39,8 @@ const PromoCard = (props: PromoCardProps) => {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  // Convertir los días del array a sus iniciales
   const activeDays = days.map(day => DAYS_MAPPING[day] || '');
 
-  // Formatear fechas de validez
   const formatDate = (timestamp: any) => {
     if (!timestamp) {
       return '';
@@ -92,10 +89,11 @@ const PromoCard = (props: PromoCardProps) => {
 
         <View style={styles.rightSection}>
           <Label
-            style={{width: '100%', fontWeight: 'bold'}}
+            style={styles.titleLabel}
             flexWrap="wrap"
             variant="content"
-            ellipsizeMode={'tail'}>
+            numberOfLines={1}
+            ellipsizeMode="tail">
             {title}
           </Label>
 
@@ -129,62 +127,71 @@ const PromoCard = (props: PromoCardProps) => {
   );
 };
 
-// Mantenemos los mismos estilos que ya tenías
 const styles = StyleSheet.create({
   container: {
-    width: '90%',
+    flex: 1,
+    width: '100%',
     flexDirection: 'row',
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     borderColor: '#E0E0E0',
     borderWidth: 1,
-    elevation: 5,
+    elevation: 2,
     shadowColor: '#000',
     shadowOpacity: 0.1,
-    shadowOffset: {width: 0, height: 3},
-    shadowRadius: 5,
+    shadowOffset: {width: 0, height: 1},
+    shadowRadius: 3,
+    marginHorizontal: 16,
+    marginVertical: 8,
+    minHeight: 150,
+    maxHeight: 150,
+    position: 'absolute',
+    left: 5,
+    right: 0,
   },
   leftSection: {
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
     backgroundColor: '#12171D',
-    padding: 16,
+    padding: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 90,
+    width: 100,
   },
   rightSection: {
     flex: 1,
-    padding: 16,
-    width: '75%',
+    padding: 12,
+    justifyContent: 'space-between',
+  },
+  titleLabel: {
+    width: '100%',
+    fontWeight: 'bold',
+    fontSize: 14,
+    marginBottom: 4,
   },
   infoRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    marginVertical: 8,
-  },
-  infoText: {
-    fontSize: 14,
-    color: '#6D6D6D',
+    marginVertical: 4,
   },
   validityText: {
     fontSize: 12,
     color: '#6D6D6D',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   daysContainer: {
     flexDirection: 'row',
   },
   dayContainer: {
-    margin: 2,
+    marginRight: 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
   dayCircle: {
-    width: 26,
-    height: 26,
-    borderRadius: 13,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -197,7 +204,7 @@ const styles = StyleSheet.create({
     borderColor: '#E0E0E0',
   },
   dayText: {
-    fontSize: 12,
+    fontSize: 10,
     fontWeight: 'bold',
   },
   activeDayText: {
@@ -208,10 +215,13 @@ const styles = StyleSheet.create({
   },
   buttonContent: {
     flexDirection: 'row-reverse',
+    height: 40,
+    padding: 0,
   },
   buttonLabel: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#12171D',
+    marginLeft: 0,
   },
 });
 

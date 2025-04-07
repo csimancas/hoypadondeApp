@@ -67,7 +67,7 @@ const BussinesList = () => {
                 navigateWithParams('BussinesDetail', {name: item.name});
               }}
               bussinesId={item.id}
-              image={item.images}
+              image={item.logo}
               name={item.name}
               location={item.address}
               opening_hours={item.opening_hours}

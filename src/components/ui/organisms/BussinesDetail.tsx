@@ -1,4 +1,4 @@
-import React, {useLayoutEffect} from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -15,13 +15,14 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Carousel from 'react-native-reanimated-carousel';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import Pdf from 'react-native-pdf';
 import AboutBussines from '../molecules/AboutBussines';
 import AmenitiesCard from '../molecules/AmenitiesCard';
 import PromoCard from '../atoms/PromotionCard';
 import Label from '../atoms/Label';
 import useBusinessStore from '../../../store/bussinesStore';
 
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 interface RouteParams {
   name?: string;
@@ -33,7 +34,6 @@ const BussinesDetail = () => {
   const route = useRoute();
   const {name} = route.params as RouteParams;
 
-  console.log(selectedBusiness);
   const shareBusiness = async () => {
     try {
       await Share.share({
@@ -58,7 +58,7 @@ const BussinesDetail = () => {
       ),
       headerLeft: () => (
         <Pressable
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate('HomeStack')}
           style={{marginRight: 20}}>
           <Icon name="arrow-back" size={24} color="black" />
         </Pressable>
@@ -67,7 +67,6 @@ const BussinesDetail = () => {
     });
   }, [navigation, name, shareBusiness]);
 
-  // Asegurarnos de que promotions es un array
   const promotions = selectedBusiness.promotions || [];
   const menus = selectedBusiness.menus || [];
 
@@ -96,7 +95,7 @@ const BussinesDetail = () => {
             </Label>
             <View style={{height: 160}}>
               <Carousel
-                loop
+                loop={false}
                 width={width - 48}
                 height={140}
                 data={promotions}
@@ -106,7 +105,7 @@ const BussinesDetail = () => {
                   parallaxScrollingScale: 0.9,
                   parallaxScrollingOffset: 50,
                 }}
-                renderItem={({item}) => (
+                renderItem={({item, index}) => (
                   <View style={styles.carouselItemContainer}>
                     <PromoCard
                       action={() => console.log(item)}
@@ -143,14 +142,21 @@ const BussinesDetail = () => {
   );
 };
 
-// Componente para mostrar menús con zoom
 const MenuItemCard = ({uri}) => {
-  const [modalVisible, setModalVisible] = React.useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const isPDF = uri.toLowerCase().endsWith('.pdf');
 
   return (
     <Pressable onPress={() => setModalVisible(true)}>
       <View style={styles.menuCard}>
-        <Image source={{uri}} style={styles.menuImage} />
+        {isPDF ? (
+          <View style={styles.pdfPreview}>
+            <Icon name="document-text" size={40} color="#007AFF" />
+            <Text style={styles.pdfText}>PDF</Text>
+          </View>
+        ) : (
+          <Image source={{uri}} style={styles.menuImage} />
+        )}
 
         <Modal
           visible={modalVisible}
@@ -163,11 +169,34 @@ const MenuItemCard = ({uri}) => {
               onPress={() => setModalVisible(false)}>
               <Icon name="close" size={24} color="white" />
             </Pressable>
-            <ImageViewer
-              imageUrls={[{url: uri}]}
-              enableSwipeDown
-              onSwipeDown={() => setModalVisible(false)}
-            />
+
+            {isPDF ? (
+              <Pdf
+                source={{uri: uri}}
+                style={styles.pdfView}
+                onLoadComplete={(numberOfPages, filePath) => {
+                  console.log(`PDF cargado: ${numberOfPages} páginas`);
+                }}
+                onPageChanged={(page, totalPages) => {
+                  console.log(`Página actual: ${page}`);
+                }}
+                onError={error => {
+                  console.log('Error al cargar PDF:', error);
+                }}
+                enablePaging={true}
+                activityIndicator={() => (
+                  <View style={styles.loadingContainer}>
+                    <Text style={styles.loadingText}>Cargando PDF...</Text>
+                  </View>
+                )}
+              />
+            ) : (
+              <ImageViewer
+                imageUrls={[{url: uri}]}
+                enableSwipeDown
+                onSwipeDown={() => setModalVisible(false)}
+              />
+            )}
           </View>
         </Modal>
       </View>
@@ -193,7 +222,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 8, // Damos un poco de espacio entre elementos
+    paddingHorizontal: 8,
   },
   menuScrollContainer: {
     paddingVertical: 16,
@@ -224,6 +253,34 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.5)',
     borderRadius: 20,
     padding: 8,
+  },
+  pdfPreview: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F9F9F9',
+  },
+  pdfText: {
+    marginTop: 5,
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#555',
+  },
+  pdfView: {
+    flex: 1,
+    width: width,
+    height: height,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
 
