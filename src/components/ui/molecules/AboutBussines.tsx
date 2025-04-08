@@ -1,12 +1,5 @@
-import React, {useRef, useState} from 'react';
-import {
-  View,
-  ScrollView,
-  Image,
-  StyleSheet,
-  Dimensions,
-  Animated,
-} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
 import Label from '../atoms/Label';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -25,12 +18,64 @@ interface AboutBussinesProps {
   };
   averageTicket: number;
   description: string;
-  opening_hours: string;
+  opening_hours: any;
   images: [];
   categories: string;
 }
 
 const {width} = Dimensions.get('window');
+const WeekSchedule = ({opening_hours}: {opening_hours: any}) => {
+  const {formatTime} = commonFunctions();
+
+  const daysOfWeekEn = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
+
+  const daysOfWeekEs = [
+    'Lunes',
+    'Martes',
+    'Miércoles',
+    'Jueves',
+    'Viernes',
+    'Sábado',
+    'Domingo',
+  ];
+
+  return (
+    <View style={styles.weekScheduleContainer}>
+      {daysOfWeekEn.map((day, index) => {
+        const schedule = opening_hours[day];
+        let scheduleText = 'Cerrado';
+
+        if (schedule && schedule.open && schedule.close) {
+          const openTime = formatTime(schedule.open);
+          const closeTime = formatTime(schedule.close);
+          const nextDayText = schedule.nextDay
+            ? ' (Cierra al día siguiente)'
+            : '';
+          scheduleText = `${openTime} - ${closeTime}${nextDayText}`;
+        }
+
+        return (
+          <View key={day} style={styles.dayScheduleRow}>
+            <Label variant="content2" style={styles.dayName}>
+              {daysOfWeekEs[index]}:
+            </Label>
+            <Label variant="content2" style={styles.scheduleText}>
+              {scheduleText}
+            </Label>
+          </View>
+        );
+      })}
+    </View>
+  );
+};
 
 const AboutBussines: React.FC<AboutBussinesProps> = ({
   averageTicket,
@@ -40,10 +85,15 @@ const AboutBussines: React.FC<AboutBussinesProps> = ({
   images,
   categories,
 }) => {
+  const [showFullSchedule, setShowFullSchedule] = useState(false);
   const {getTodaySchedule, isBusinessOpenNow} = commonFunctions();
   const todaySchedule = getTodaySchedule(opening_hours);
   const isOpen = isBusinessOpenNow(opening_hours);
   const parsedAddress = `${address.street} ${address.number} ${address.neighborhood}, ${address.city}, ${address.state}`;
+
+  const toggleSchedule = () => {
+    setShowFullSchedule(!showFullSchedule);
+  };
 
   return (
     <View style={styles.container}>
@@ -60,11 +110,24 @@ const AboutBussines: React.FC<AboutBussinesProps> = ({
         {description}
       </Label>
 
-      <View style={styles.row}>
-        <AntDesign name="clockcircleo" size={16} color="#1A242F" />
-        <Label variant="content2" style={styles.text}>
-          {todaySchedule}
-        </Label>
+      <View style={styles.scheduleContainer}>
+        <TouchableOpacity
+          style={styles.scheduleHeader}
+          onPress={toggleSchedule}>
+          <View style={styles.row}>
+            <AntDesign name="clockcircleo" size={16} color="#1A242F" />
+            <Label variant="content2" style={styles.text}>
+              {todaySchedule}
+            </Label>
+            <AntDesign
+              name={showFullSchedule ? 'up' : 'down'}
+              size={16}
+              color="#1A242F"
+            />
+          </View>
+        </TouchableOpacity>
+
+        {showFullSchedule && <WeekSchedule opening_hours={opening_hours} />}
       </View>
 
       <View style={styles.row}>
@@ -108,7 +171,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   image: {
-    width: width, // Ahora ocupa todo el ancho
+    width: width,
     height: 210,
     borderRadius: 20,
   },
@@ -139,6 +202,36 @@ const styles = StyleSheet.create({
   text: {
     color: '#1A242F',
     marginLeft: 5,
+    flex: 1,
+  },
+  scheduleContainer: {
+    borderRadius: 8,
+    overflow: 'hidden',
+  },
+  scheduleHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  weekScheduleContainer: {
+    marginTop: 5,
+    borderTopWidth: 1,
+    borderTopColor: '#EEEEEE',
+  },
+  dayScheduleRow: {
+    flexDirection: 'row',
+    marginTop: 5,
+    justifyContent: 'space-between',
+  },
+  dayName: {
+    color: '#1A242F',
+    fontWeight: '500',
+    width: 90,
+  },
+  scheduleText: {
+    color: '#1A242F',
+    flex: 1,
+    textAlign: 'right',
   },
 });
 
