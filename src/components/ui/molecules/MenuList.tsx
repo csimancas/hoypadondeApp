@@ -40,7 +40,6 @@ const MenusList = ({data}: MenuListProps) => {
     url: item,
   }));
 
-  console.log(data);
   return (
     <View style={styles.container}>
       <Label variant="title">Menus</Label>
