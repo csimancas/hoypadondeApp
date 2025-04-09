@@ -1,6 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
 import {
-  Text,
   View,
   StyleSheet,
   Modal,
@@ -12,7 +11,10 @@ import MapView, {Marker, Region} from 'react-native-maps';
 import HorizontalBussinesCard from '../molecules/HorizontalBussinesCard';
 import useBusinessStore from '../../../store/bussinesStore';
 import markerImage from '../../../assets/logo_mapa.png';
+import commonFunctions from '../../../utils/common';
+import NavigationMethods from '../../../utils/navigation';
 
+// Define región inicial
 const TepicRegion: Region = {
   latitude: 21.508742,
   longitude: -104.895081,
@@ -20,49 +22,74 @@ const TepicRegion: Region = {
   longitudeDelta: 0.1,
 };
 
+// Componente para los marcadores
+const BusinessMarker = React.memo(({business, isSelected, onPress}) => {
+  return (
+    <Marker
+      coordinate={{
+        latitude: business.location.latitude,
+        longitude: business.location.longitude,
+      }}
+      onPress={() => onPress(business)}>
+      <View style={styles.markerView}>
+        <Image
+          source={markerImage}
+          style={[
+            styles.markerImage,
+            {
+              tintColor: isSelected
+                ? colors.lightTheme.colors.primary
+                : colors.lightTheme.colors.placeholder,
+            },
+          ]}
+        />
+      </View>
+    </Marker>
+  );
+});
+
 const BussinesMap = () => {
-  const {businesses} = useBusinessStore();
-  const [selectedBusiness, setSelectedBusiness] = useState(null);
+  const {businesses, setSelectedBusiness} = useBusinessStore();
+  const [selectedBusiness, setLocalSelectedBusiness] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const {isBusinessOpenNow} = commonFunctions();
+  const {navigateTo} = NavigationMethods();
 
-  const handleMarkerPress = business => {
-    setSelectedBusiness(business);
+  // Funciones memoizadas
+  const handleMarkerPress = useCallback(business => {
+    setLocalSelectedBusiness(business);
     setModalVisible(true);
-  };
+  }, []);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setModalVisible(false);
-    setSelectedBusiness(null);
-  };
+    setLocalSelectedBusiness(null);
+  }, []);
+
+  // Marcadores memoizados
+  const markers = useMemo(() => {
+    return businesses.map(business => (
+      <BusinessMarker
+        key={business.id}
+        business={business}
+        isSelected={selectedBusiness?.id === business.id}
+        onPress={handleMarkerPress}
+      />
+    ));
+  }, [businesses, selectedBusiness, handleMarkerPress]);
 
   return (
     <View style={styles.container}>
-      <MapView style={styles.map} initialRegion={TepicRegion}>
-        {businesses.map(business => (
-          <Marker
-            key={business.id}
-            coordinate={{
-              latitude: business.location.latitude,
-              longitude: business.location.longitude,
-            }}
-            onPress={() => handleMarkerPress(business)}>
-            <View style={styles.markerView}>
-              <Image
-                source={markerImage}
-                style={[
-                  styles.markerImage,
-
-                  {
-                    tintColor:
-                      selectedBusiness?.id === business.id
-                        ? colors.lightTheme.colors.primary
-                        : colors.lightTheme.colors.placeholder,
-                  },
-                ]}
-              />
-            </View>
-          </Marker>
-        ))}
+      <MapView
+        style={styles.map}
+        initialRegion={TepicRegion}
+        maxZoomLevel={18}
+        minZoomLevel={8}
+        loadingEnabled={true}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+        showsCompass={true}>
+        {markers}
       </MapView>
 
       <Modal
@@ -73,10 +100,17 @@ const BussinesMap = () => {
         <TouchableWithoutFeedback onPress={closeModal}>
           <View style={styles.modalContainer}>
             <View style={styles.cardContainer}>
-              <HorizontalBussinesCard
-                image={selectedBusiness?.logo}
-                name={selectedBusiness?.name}
-              />
+              {selectedBusiness && (
+                <HorizontalBussinesCard
+                  onPress={() => {
+                    setSelectedBusiness(selectedBusiness);
+                    navigateTo('BussinesDetail');
+                  }}
+                  isOpen={isBusinessOpenNow(selectedBusiness.opening_hours)}
+                  image={selectedBusiness.logo}
+                  name={selectedBusiness.name}
+                />
+              )}
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -115,13 +149,14 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
     padding: 16,
-    elevation: 5,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowOffset: {width: 0, height: -2},
-    shadowRadius: 6,
-    marginHorizontal: 16,
+    // backgroundColor: colors.lightTheme.colors.background,
+    // elevation: 5,
+    // shadowColor: '#000',
+    // shadowOpacity: 0.2,
+    // shadowOffset: {width: 0, height: -2},
+    // shadowRadius: 6,
+    // marginHorizontal: 16,
   },
 });
 
-export default BussinesMap;
+export default React.memo(BussinesMap);

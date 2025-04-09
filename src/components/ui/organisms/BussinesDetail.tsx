@@ -74,7 +74,8 @@ const BussinesDetail = () => {
       ),
       headerLeft: () => (
         <Pressable
-          onPress={() => navigation.navigate('HomeStack')}
+          // onPress={() => navigation.navigate('HomeStack')}
+          onPress={() => navigation.goBack()}
           style={{marginRight: 20}}>
           <Icon name="arrow-back" size={24} color="black" />
         </Pressable>
@@ -169,9 +170,10 @@ const BussinesDetail = () => {
                   parallaxScrollingScale: 0.9,
                   parallaxScrollingOffset: 50,
                 }}
-                renderItem={({item, index}) => (
+                renderItem={({item}) => (
                   <View style={styles.carouselItemContainer}>
                     <PromoCard
+                      key={item.id}
                       action={() => console.log(item)}
                       title={item.title}
                       subtitle={item.description}

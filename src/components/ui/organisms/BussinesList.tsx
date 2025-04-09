@@ -16,7 +16,7 @@ import useAuthStore from '../../../store/authStore';
 import Label from '../atoms/Label';
 
 const BussinesList = () => {
-  const {navigateWithParams} = NavigationMethods();
+  const {navigateTo} = NavigationMethods();
   const {fetchBusinesses, businesses, loading, error, setSelectedBusiness} =
     useBusinessStore();
   const {user} = useAuthStore();
@@ -59,12 +59,13 @@ const BussinesList = () => {
         <SearchBarComponent onSearch={setSearchQuery} />
         <CategoriesList />
         <FlatList
+          removeClippedSubviews={false}
           data={filteredBusinesses}
           renderItem={({item}) => (
             <BussinesCard
               action={() => {
                 setSelectedBusiness(item);
-                navigateWithParams('BussinesDetail', {name: item.name});
+                navigateTo('BussinesDetail');
               }}
               bussinesId={item.id}
               image={item.logo}
