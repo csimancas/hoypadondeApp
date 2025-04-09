@@ -31,6 +31,7 @@ const HorizontalBussinesCard = ({
   rating,
   isOpen,
 }: HorizontalBussinesCardProps) => {
+  const parsedAddress = `${location?.street}${location?.number}, Col.${location?.neighborhood}`;
   return (
     <TouchableOpacity
       style={styles.container}
@@ -58,7 +59,7 @@ const HorizontalBussinesCard = ({
         <View style={styles.detailRow}>
           <MaterialIcons name="location-on" size={14} color="#666" />
           <Text style={styles.location} numberOfLines={1} ellipsizeMode="tail">
-            {location}
+            {parsedAddress}
           </Text>
         </View>
 
@@ -67,11 +68,11 @@ const HorizontalBussinesCard = ({
           <Text style={styles.hours}>{hours}</Text>
         </View>
 
-        <View style={styles.statusBadge}>
+        {/* <View style={styles.statusBadge}>
           <Text style={styles.statusText}>
             {isOpen ? 'Abierto ahora' : 'Cerrado ahora'}
           </Text>
-        </View>
+        </View> */}
       </View>
     </TouchableOpacity>
   );

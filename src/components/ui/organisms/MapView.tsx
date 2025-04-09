@@ -52,7 +52,7 @@ const BussinesMap = () => {
   const {businesses, setSelectedBusiness} = useBusinessStore();
   const [selectedBusiness, setLocalSelectedBusiness] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const {isBusinessOpenNow} = commonFunctions();
+  const {getTodaySchedule, isBusinessOpenNow} = commonFunctions();
   const {navigateTo} = NavigationMethods();
 
   // Funciones memoizadas
@@ -106,6 +106,8 @@ const BussinesMap = () => {
                     setSelectedBusiness(selectedBusiness);
                     navigateTo('BussinesDetail');
                   }}
+                  hours={getTodaySchedule(selectedBusiness.opening_hours)}
+                  location={selectedBusiness.address}
                   isOpen={isBusinessOpenNow(selectedBusiness.opening_hours)}
                   image={selectedBusiness.logo}
                   name={selectedBusiness.name}
