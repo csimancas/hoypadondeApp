@@ -149,6 +149,7 @@ const BussinesDetail = () => {
           description={selectedBusiness.description}
           images={selectedBusiness.images}
           opening_hours={selectedBusiness.opening_hours}
+          coordinates={selectedBusiness.location}
         />
 
         <AmenitiesCard data={selectedBusiness.amenities} />
