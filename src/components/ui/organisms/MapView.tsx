@@ -67,6 +67,7 @@ const BussinesMap = () => {
   }, []);
 
   // Marcadores memoizados
+  console.log(businesses.length);
   const markers = useMemo(() => {
     return businesses.map(business => (
       <BusinessMarker

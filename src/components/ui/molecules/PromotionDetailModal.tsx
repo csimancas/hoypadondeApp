@@ -43,7 +43,6 @@ const PromotionDetailModal = ({
     return format(date, 'dd MMMM yyyy', {locale: es});
   };
 
-  // Formatea los días para mostrarlos completos
   const getDaysString = (days: string[]) => {
     if (days.length === 7) {
       return 'Todos los días';

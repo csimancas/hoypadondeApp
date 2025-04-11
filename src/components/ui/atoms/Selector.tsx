@@ -1,40 +1,52 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React from 'react';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
-const ViewSelector = () => {
-  const [selectedView, setSelectedView] = useState("map"); // Estado inicial
+type ViewType = 'businesses' | 'promotions';
 
+interface ViewSelectorProps {
+  selectedView: ViewType;
+  onViewChange: (view: ViewType) => void;
+}
+
+const ViewSelector: React.FC<ViewSelectorProps> = ({
+  selectedView,
+  onViewChange,
+}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={[
           styles.button,
-          selectedView === "map" ? styles.selectedButton : styles.unselectedButton,
+          selectedView === 'businesses'
+            ? styles.selectedButton
+            : styles.unselectedButton,
         ]}
-        onPress={() => setSelectedView("map")}
-      >
+        onPress={() => onViewChange('businesses')}>
         <Text
           style={[
             styles.text,
-            selectedView === "map" ? styles.selectedText : styles.unselectedText,
-          ]}
-        >
+            selectedView === 'businesses'
+              ? styles.selectedText
+              : styles.unselectedText,
+          ]}>
           Negocios
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[
           styles.button,
-          selectedView === "list" ? styles.selectedButton : styles.unselectedButton,
+          selectedView === 'promotions'
+            ? styles.selectedButton
+            : styles.unselectedButton,
         ]}
-        onPress={() => setSelectedView("list")}
-      >
+        onPress={() => onViewChange('promotions')}>
         <Text
           style={[
             styles.text,
-            selectedView === "list" ? styles.selectedText : styles.unselectedText,
-          ]}
-        >
+            selectedView === 'promotions'
+              ? styles.selectedText
+              : styles.unselectedText,
+          ]}>
           Promociones
         </Text>
       </TouchableOpacity>
@@ -44,34 +56,38 @@ const ViewSelector = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "row",
-    backgroundColor: "#f4f4f4", // Fondo general
-    borderRadius: 10,
-    padding: 5,
-    alignSelf: "center",
-    justifyContent: "center",
+    flexDirection: 'row',
+    backgroundColor: '#f4f4f4',
+    borderRadius: 12,
+    padding: 4,
+    width: '100%',
   },
   button: {
     flex: 1,
     borderRadius: 10,
-    paddingVertical: 10,
-    alignItems: "center",
+    paddingVertical: 12,
+    alignItems: 'center',
   },
   selectedButton: {
-    backgroundColor: "#6200EE", // Color púrpura
+    backgroundColor: '#6200EE',
+    shadowColor: '#6200EE',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 3,
   },
   unselectedButton: {
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
   },
   text: {
-    fontSize: 14,
-    fontWeight: "bold",
+    fontSize: 15,
+    fontWeight: '600',
   },
   selectedText: {
-    color: "#ffffff",
+    color: '#ffffff',
   },
   unselectedText: {
-    color: "#aaaaaa",
+    color: '#666666',
   },
 });
 

@@ -1,5 +1,13 @@
 // import React, {useState} from 'react';
-// import {View, StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
+// import {
+//   View,
+//   StyleSheet,
+//   Dimensions,
+//   TouchableOpacity,
+//   Linking,
+//   Platform,
+//   Alert,
+// } from 'react-native';
 // import Label from '../atoms/Label';
 // import AntDesign from 'react-native-vector-icons/AntDesign';
 // import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -21,6 +29,10 @@
 //   opening_hours: any;
 //   images: [];
 //   categories: string;
+//   coordinates?: {
+//     latitude: number;
+//     longitude: number;
+//   };
 // }
 
 // const {width} = Dimensions.get('window');
@@ -84,6 +96,7 @@
 //   opening_hours,
 //   images,
 //   categories,
+//   coordinates,
 // }) => {
 //   const [showFullSchedule, setShowFullSchedule] = useState(false);
 //   const {getTodaySchedule, isBusinessOpenNow} = commonFunctions();
@@ -93,6 +106,101 @@
 
 //   const toggleSchedule = () => {
 //     setShowFullSchedule(!showFullSchedule);
+//   };
+
+//   const openMapsApp = () => {
+//     if (!coordinates) {
+//       Alert.alert('Error', 'No hay coordenadas disponibles para este negocio');
+//       return;
+//     }
+
+//     const {latitude, longitude} = coordinates;
+//     const destination = `${latitude},${longitude}`;
+//     const label = encodeURIComponent(parsedAddress);
+
+//     const mapOptions = {
+//       google: {
+//         url: Platform.select({
+//           ios: `comgooglemaps://?q=${label}&center=${destination}&zoom=15`,
+//           android: `geo:${destination}?q=${label}`,
+//         }),
+//         appName: 'Google Maps',
+//       },
+//       waze: {
+//         url: `waze://?ll=${destination}&navigate=yes`,
+//         appName: 'Waze',
+//       },
+//       apple: {
+//         url: `http://maps.apple.com/?q=${label}&ll=${destination}`,
+//         appName: 'Apple Maps',
+//       },
+//     };
+
+//     // Verificar si Waze está instalado
+//     Linking.canOpenURL(mapOptions.waze.url)
+//       .then(wazeSupported => {
+//         if (wazeSupported) {
+//           // Mostrar opciones al usuario
+//           Alert.alert(
+//             'Abrir mapa',
+//             '¿Con qué aplicación deseas abrir la ubicación?',
+//             [
+//               {
+//                 text: 'Waze',
+//                 onPress: () => Linking.openURL(mapOptions.waze.url),
+//               },
+//               {
+//                 text: 'Google Maps',
+//                 onPress: () => {
+//                   Linking.canOpenURL(mapOptions.google.url)
+//                     .then(gmapsSupported => {
+//                       if (gmapsSupported) {
+//                         Linking.openURL(mapOptions.google.url);
+//                       } else {
+//                         // Abrir Maps de Apple en iOS, o enlace web en Android
+//                         if (Platform.OS === 'ios') {
+//                           Linking.openURL(mapOptions.apple.url);
+//                         } else {
+//                           Linking.openURL(
+//                             `https://www.google.com/maps/search/?api=1&query=${destination}`,
+//                           );
+//                         }
+//                       }
+//                     })
+//                     .catch(err =>
+//                       console.error('Error al verificar Google Maps:', err),
+//                     );
+//                 },
+//               },
+//               {
+//                 text: 'Cancelar',
+//                 style: 'cancel',
+//               },
+//             ],
+//           );
+//         } else {
+//           // Si Waze no está disponible, intentamos abrir Google Maps directamente
+//           Linking.canOpenURL(mapOptions.google.url)
+//             .then(gmapsSupported => {
+//               if (gmapsSupported) {
+//                 Linking.openURL(mapOptions.google.url);
+//               } else {
+//                 // Si Google Maps no está disponible, abrimos el mapa por defecto
+//                 if (Platform.OS === 'ios') {
+//                   Linking.openURL(mapOptions.apple.url);
+//                 } else {
+//                   Linking.openURL(
+//                     `https://www.google.com/maps/search/?api=1&query=${destination}`,
+//                   );
+//                 }
+//               }
+//             })
+//             .catch(err =>
+//               console.error('Error al verificar Google Maps:', err),
+//             );
+//         }
+//       })
+//       .catch(err => console.error('Error al verificar Waze:', err));
 //   };
 
 //   return (
@@ -144,12 +252,12 @@
 //         </Label>
 //       </View>
 
-//       <View style={styles.row}>
+//       <TouchableOpacity style={styles.row} onPress={openMapsApp}>
 //         <MaterialIcon name="directions" size={16} color={'#1A242F'} />
-//         <Label variant="content2" style={styles.text}>
+//         <Label variant="content2" style={[styles.text, styles.linkText]}>
 //           {parsedAddress}
 //         </Label>
-//       </View>
+//       </TouchableOpacity>
 //     </View>
 //   );
 // };
@@ -204,6 +312,10 @@
 //     marginLeft: 5,
 //     flex: 1,
 //   },
+//   linkText: {
+//     textDecorationLine: 'underline',
+//     color: '#1A242F',
+//   },
 //   scheduleContainer: {
 //     borderRadius: 8,
 //     overflow: 'hidden',
@@ -236,8 +348,8 @@
 // });
 
 // export default AboutBussines;
-
-import React, {useState} from 'react';
+//
+// import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -254,6 +366,7 @@ import DollarIconSVG from '../../../utils/svg/DollasIcon';
 import OpenTag from '../atoms/OpenTag';
 import BussinesImgCarousel from '../atoms/BussinesImgCarousel';
 import commonFunctions from '../../../utils/common';
+import {useState} from 'react';
 
 interface AboutBussinesProps {
   address: {
@@ -357,89 +470,55 @@ const AboutBussines: React.FC<AboutBussinesProps> = ({
     const destination = `${latitude},${longitude}`;
     const label = encodeURIComponent(parsedAddress);
 
-    const mapOptions = {
-      google: {
+    const mapUrls = [
+      // Google Maps - navigate=yes activa el modo de navegación
+      {
         url: Platform.select({
-          ios: `comgooglemaps://?q=${label}&center=${destination}&zoom=15`,
-          android: `geo:${destination}?q=${label}`,
+          ios: `comgooglemaps://?daddr=${label}&center=${destination}&zoom=15&directionsmode=driving`,
+          android: `google.navigation:q=${destination}`,
         }),
-        appName: 'Google Maps',
+        webFallback: `https://www.google.com/maps/dir/?api=1&destination=${destination}&travelmode=driving`,
       },
-      waze: {
+      // Waze - navigate=yes activa el modo de navegación
+      {
         url: `waze://?ll=${destination}&navigate=yes`,
-        appName: 'Waze',
+        webFallback: `https://www.waze.com/ul?ll=${destination}&navigate=yes`,
       },
-      apple: {
-        url: `http://maps.apple.com/?q=${label}&ll=${destination}`,
-        appName: 'Apple Maps',
-      },
-    };
+      // Apple Maps (solo para iOS) - dirflg=d activa el modo de conducción
+      ...(Platform.OS === 'ios'
+        ? [
+            {
+              url: `http://maps.apple.com/?daddr=${label}&ll=${destination}&dirflg=d`,
+              webFallback: null, // No necesita fallback
+            },
+          ]
+        : []),
+    ];
 
-    // Verificar si Waze está instalado
-    Linking.canOpenURL(mapOptions.waze.url)
-      .then(wazeSupported => {
-        if (wazeSupported) {
-          // Mostrar opciones al usuario
-          Alert.alert(
-            'Abrir mapa',
-            '¿Con qué aplicación deseas abrir la ubicación?',
-            [
-              {
-                text: 'Waze',
-                onPress: () => Linking.openURL(mapOptions.waze.url),
-              },
-              {
-                text: 'Google Maps',
-                onPress: () => {
-                  Linking.canOpenURL(mapOptions.google.url)
-                    .then(gmapsSupported => {
-                      if (gmapsSupported) {
-                        Linking.openURL(mapOptions.google.url);
-                      } else {
-                        // Abrir Maps de Apple en iOS, o enlace web en Android
-                        if (Platform.OS === 'ios') {
-                          Linking.openURL(mapOptions.apple.url);
-                        } else {
-                          Linking.openURL(
-                            `https://www.google.com/maps/search/?api=1&query=${destination}`,
-                          );
-                        }
-                      }
-                    })
-                    .catch(err =>
-                      console.error('Error al verificar Google Maps:', err),
-                    );
-                },
-              },
-              {
-                text: 'Cancelar',
-                style: 'cancel',
-              },
-            ],
-          );
-        } else {
-          // Si Waze no está disponible, intentamos abrir Google Maps directamente
-          Linking.canOpenURL(mapOptions.google.url)
-            .then(gmapsSupported => {
-              if (gmapsSupported) {
-                Linking.openURL(mapOptions.google.url);
-              } else {
-                // Si Google Maps no está disponible, abrimos el mapa por defecto
-                if (Platform.OS === 'ios') {
-                  Linking.openURL(mapOptions.apple.url);
-                } else {
-                  Linking.openURL(
-                    `https://www.google.com/maps/search/?api=1&query=${destination}`,
-                  );
-                }
-              }
-            })
-            .catch(err =>
-              console.error('Error al verificar Google Maps:', err),
-            );
-        }
-      })
-      .catch(err => console.error('Error al verificar Waze:', err));
+    // Función para intentar abrir la siguiente app de mapas
+    const tryNextMap = (index = 0) => {
+      if (index >= mapUrls.length) {
+        Linking.openURL(
+          `https://www.google.com/maps/dir/?api=1&destination=${destination}&travelmode=driving`,
+        );
+        return;
+      }
+
+      const currentMap = mapUrls[index];
+
+      Linking.canOpenURL(currentMap.url)
+        .then(supported => {
+          if (supported) {
+            Linking.openURL(currentMap.url);
+          } else {
+            tryNextMap(index + 1);
+          }
+        })
+        .catch(error => {
+          tryNextMap(index + 1);
+        });
+    };
+    tryNextMap();
   };
 
   return (
