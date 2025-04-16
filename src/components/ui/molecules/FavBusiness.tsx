@@ -15,8 +15,8 @@ import NavigationMethods from '../../../utils/navigation';
 const FavBussinesView = () => {
   const [favoriteBusinesses, setFavoriteBusinesses] = useState([]);
 
-  // Obtener datos de los stores
-  const {favorites} = useUserStore();
+  // Obtener datos de los stores - cambiado a favoritesBussines
+  const {favoritesBussines} = useUserStore();
   const {businesses, loading, error, fetchBusinesses, setSelectedBusiness} =
     useBusinessStore();
   const {getTodaySchedule, isBusinessOpenNow} = commonFunctions();
@@ -30,16 +30,26 @@ const FavBussinesView = () => {
   }, []);
 
   useEffect(() => {
+    console.log('Actualizando negocios favoritos...');
     // Filtrar los negocios para obtener solo los favoritos
-    if (businesses.length > 0 && favorites.length > 0) {
+    console.log('Total de negocios:', businesses.length);
+    console.log('Total de favoritos:', favoritesBussines?.length || 0);
+
+    if (
+      businesses.length > 0 &&
+      favoritesBussines &&
+      favoritesBussines.length > 0
+    ) {
       const filteredBusinesses = businesses.filter(business =>
-        favorites.includes(business.id),
+        favoritesBussines.includes(business.id),
       );
+      console.log('Negocios favoritos filtrados:', filteredBusinesses.length);
       setFavoriteBusinesses(filteredBusinesses);
     } else {
+      console.log('No hay negocios favoritos para mostrar');
       setFavoriteBusinesses([]);
     }
-  }, [businesses, favorites]);
+  }, [businesses, favoritesBussines]);
 
   if (loading) {
     return (
