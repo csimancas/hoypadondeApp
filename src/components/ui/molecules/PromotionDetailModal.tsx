@@ -11,6 +11,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {format} from 'date-fns';
 import {es} from 'date-fns/locale';
 import Label from '../atoms/Label';
+import useAuthStore from '../../../store/authStore';
 
 interface PromotionDetailModalProps {
   visible: boolean;
@@ -34,7 +35,9 @@ const PromotionDetailModal = ({
   onClose,
   promotion,
 }: PromotionDetailModalProps) => {
-  // Formatear fechas de validez
+  const {user, toggleFavoritePromotions} = useAuthStore();
+  console.log(111111, promotion);
+  // const isFavoritePromotion = user?.favorite_promotions.includes(promotion.id);
   const formatDate = (timestamp: any) => {
     if (!timestamp) {
       return '';
@@ -144,9 +147,16 @@ const PromotionDetailModal = ({
             <Button
               mode="contained"
               onPress={onClose}
-              style={styles.actionButton}
+              style={styles.closeButtonColor}
               labelStyle={styles.actionButtonLabel}>
               Cerrar
+            </Button>
+            <Button
+              mode="outlined"
+              onPress={onClose}
+              style={styles.saveButton}
+              labelStyle={styles.actionButtonLabel}>
+              Guardar en favoritos
             </Button>
           </View>
         </View>
@@ -242,10 +252,15 @@ const styles = StyleSheet.create({
   actionsContainer: {
     marginTop: 20,
     alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  actionButton: {
-    width: '100%',
+  closeButtonColor: {
+    backgroundColor: 'red',
+  },
+  saveButton: {
     backgroundColor: '#12171D',
+    marginHorizontal: 10,
   },
   actionButtonLabel: {
     fontSize: 16,

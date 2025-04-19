@@ -2,6 +2,7 @@ import React from 'react';
 import {Pressable, StyleSheet, Alert, Text} from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import useAuthStore from '../../../store/authStore';
+import {useState} from 'react';
 
 const AddFavBusiness = ({
   businessId,
@@ -10,12 +11,13 @@ const AddFavBusiness = ({
   businessId: string;
   onToggleFavorite?: (id: string, isFavorite: boolean) => void;
 }) => {
-  const user = useAuthStore(state => state.user);
+  const {user, toggleFavoriteBusiness} = useAuthStore();
+  const [isLoading, setIsLoading] = useState(false);
 
   const isFavorite = user?.favoritesBussines.includes(businessId);
   // const isFavorite =
 
-  const handleToggleFavorite = () => {
+  const handleToggleFavorite = async () => {
     if (!user) {
       Alert.alert(
         'Inicio de sesión requerido',
@@ -25,23 +27,35 @@ const AddFavBusiness = ({
       return;
     }
 
-    const newFavoriteStatus = !isFavorite;
+    setIsLoading(true);
+    try {
+      // Usar la nueva función para alternar favoritos
+      const isNowFavorite = await toggleFavoriteBusiness(businessId);
 
-    if (newFavoriteStatus) {
-      //addFavorite(businessId);
-    } else {
-      // removeFavorite(businessId);
-    }
-
-    if (onToggleFavorite) {
-      // onToggleFavorite(businessId, newFavoriteStatus);
+      // Notificar al componente padre si es necesario
+      if (onToggleFavorite) {
+        onToggleFavorite(businessId, isNowFavorite);
+      }
+    } catch (error) {
+      console.error('Error al actualizar favoritos:', error);
+      Alert.alert(
+        'Error',
+        'No se pudo actualizar tus favoritos. Inténtalo de nuevo.',
+        [{text: 'OK'}],
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
-
   return (
     <Pressable
-      style={[styles.button, isFavorite && styles.favorite]}
-      onPress={handleToggleFavorite}>
+      style={[
+        styles.button,
+        isFavorite && styles.favorite,
+        isLoading && styles.loading,
+      ]}
+      onPress={handleToggleFavorite}
+      disabled={isLoading}>
       <MaterialIcon
         name={isFavorite ? 'favorite' : 'favorite-border'}
         size={24}

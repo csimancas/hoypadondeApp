@@ -3,6 +3,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {AuthState, User} from '../types/auth';
 import useUserStore from './userStore';
+import {Alert} from 'react-native';
 
 const useAuthStore = create<AuthState>(set => ({
   user: null,
@@ -29,7 +30,6 @@ const useAuthStore = create<AuthState>(set => ({
         displayName: `${nombre} ${apellido}`,
       });
 
-      // Datos iniciales del usuario
       const userData = {
         nombre,
         apellido,
@@ -81,19 +81,15 @@ const useAuthStore = create<AuthState>(set => ({
       const userData = userDoc.data();
 
       if (userData) {
-        // Crear un objeto de usuario con todos los campos de userData
         const user: User = {
           uid: firebaseUser.uid,
           email: firebaseUser.email || '',
-          ...userData, // Esto incluirá todos los campos que existan en Firebase
+          ...userData,
         };
 
         set({user, loading: false});
-
-        // Guardar todos los datos en userStore para persistencia
         useUserStore.getState().setUser(user);
 
-        // Actualizar lastAccess
         await firestore().collection('users').doc(firebaseUser.uid).update({
           lastAccess: firestore.FieldValue.serverTimestamp(),
         });
@@ -107,7 +103,6 @@ const useAuthStore = create<AuthState>(set => ({
     }
   },
 
-  // Cerrar sesión
   logoutUser: async () => {
     try {
       await auth().signOut();
@@ -118,7 +113,6 @@ const useAuthStore = create<AuthState>(set => ({
     }
   },
 
-  // Limpiar errores
   clearError: () => set({error: null}),
 
   checkUserSession: () => {
@@ -131,15 +125,13 @@ const useAuthStore = create<AuthState>(set => ({
             .collection('users')
             .doc(firebaseUser.uid)
             .get();
-
-          // Obtener todos los datos del usuario
           const userData = userDoc.data();
 
           if (userData) {
             const userInfo = {
               uid: firebaseUser.uid,
               email: firebaseUser.email || '',
-              ...userData, // Incluye todos los campos de Firestore
+              ...userData,
             };
 
             set({
@@ -147,10 +139,8 @@ const useAuthStore = create<AuthState>(set => ({
               loading: false,
             });
 
-            // Actualizar también el userStore para persistencia con todos los datos
             useUserStore.getState().setUser(userInfo);
 
-            // Actualizar lastAccess en Firestore
             await firestore().collection('users').doc(firebaseUser.uid).update({
               lastAccess: firestore.FieldValue.serverTimestamp(),
             });
@@ -171,16 +161,60 @@ const useAuthStore = create<AuthState>(set => ({
     return () => unsubscribe();
   },
 
-  saveBussinessToFavorites: async (businessId: string) => {
+  toggleFavoriteBusiness: async (businessId: string) => {
     try {
       const currentUser = auth().currentUser;
       if (!currentUser) {
-        throw new Error('No hay usuario autenticado');
+        Alert.alert('Error', 'No hay usuario autenticado');
       }
 
-      const userRef = firestore().collection('users').doc(currentUser.uid);
+      const userRef = firestore().collection('users').doc(currentUser?.uid);
+      const userDoc = await userRef.get();
+      const userData = userDoc.data();
 
-      // Obtener los favoritos actuales
+      if (!userData) {
+        throw new Error('No se encontraron datos de usuario');
+      }
+      const favoritesBussines = userData.favoritesBussines || [];
+      const isCurrentlyFavorite = favoritesBussines.includes(businessId);
+      let updatedFavorites;
+
+      if (isCurrentlyFavorite) {
+        updatedFavorites = favoritesBussines.filter(id => id !== businessId);
+        await userRef.update({
+          favoritesBussines: firestore.FieldValue.arrayRemove(businessId),
+        });
+      } else {
+        updatedFavorites = [...favoritesBussines, businessId];
+        await userRef.update({
+          favoritesBussines: firestore.FieldValue.arrayUnion(businessId),
+        });
+      }
+      const currentUserState = useAuthStore.getState().user;
+      if (currentUserState) {
+        const updatedUser = {
+          ...currentUserState,
+          favoritesBussines: updatedFavorites,
+        };
+        set({user: updatedUser});
+        useUserStore.getState().setUser(updatedUser);
+      }
+      return !isCurrentlyFavorite;
+    } catch (error) {
+      console.error('Error al actualizar favoritos:', error);
+      throw error;
+    }
+  },
+
+  toggleFavoritePromotions: async (promotionId: string) => {
+    try {
+      const currentUser = auth().currentUser;
+      if (!currentUser) {
+        Alert.alert('Error', 'No hay usuario autenticado');
+        return false;
+      }
+
+      const userRef = firestore().collection('users').doc(currentUser?.uid);
       const userDoc = await userRef.get();
       const userData = userDoc.data();
 
@@ -188,54 +222,37 @@ const useAuthStore = create<AuthState>(set => ({
         throw new Error('No se encontraron datos de usuario');
       }
 
-      // Verificar si ya existe el array de favoritos
-      const favoritos = userData.favoritos || [];
+      const favoritePromotions = userData.favoritePromotions || [];
+      const isCurrentlyFavorite = favoritePromotions.includes(promotionId);
+      let updatedFavorites;
 
-      // Verificar si el negocio ya está en favoritos
-      if (favoritos.includes(businessId)) {
-        // Si ya está, lo quitamos (toggle)
+      if (isCurrentlyFavorite) {
+        updatedFavorites = favoritePromotions.filter(id => id !== promotionId);
         await userRef.update({
-          favoritos: firestore.FieldValue.arrayRemove(businessId),
+          favoritePromotions: firestore.FieldValue.arrayRemove(promotionId),
         });
-
-        // Actualizar el estado local
-        const updatedUser = {
-          ...useAuthStore.getState().user,
-          favoritos: favoritos.filter(id => id !== businessId),
-        };
-        set({user: updatedUser});
-        useUserStore.getState().setUser(updatedUser);
-
-        return false; // Indicar que se quitó de favoritos
       } else {
-        // Si no está, lo agregamos
+        updatedFavorites = [...favoritePromotions, promotionId];
         await userRef.update({
-          favoritos: firestore.FieldValue.arrayUnion(businessId),
+          favoritePromotions: firestore.FieldValue.arrayUnion(promotionId),
         });
+      }
 
-        // Actualizar el estado local
+      const currentUserState = useAuthStore.getState().user;
+      if (currentUserState) {
         const updatedUser = {
-          ...useAuthStore.getState().user,
-          favoritos: [...favoritos, businessId],
+          ...currentUserState,
+          favoritePromotions: updatedFavorites,
         };
         set({user: updatedUser});
         useUserStore.getState().setUser(updatedUser);
-
-        return true; // Indicar que se agregó a favoritos
       }
+
+      return !isCurrentlyFavorite;
     } catch (error) {
-      console.error('Error al guardar en favoritos:', error);
+      console.error('Error al actualizar favoritos de promociones:', error);
       throw error;
     }
-  },
-
-  // Método para verificar si un negocio está en favoritos
-  isBusinessFavorite: (businessId: string): boolean => {
-    const user = useAuthStore.getState().user;
-    if (!user || !user.favoritos) {
-      return false;
-    }
-    return user.favoritos.includes(businessId);
   },
 }));
 

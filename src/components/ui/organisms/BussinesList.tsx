@@ -19,10 +19,16 @@ import Label from '../atoms/Label';
 const BussinesList = ({showFavoritesOnly = false}) => {
   // Añadimos un prop para mostrar solo favoritos
   const {navigateTo} = NavigationMethods();
-  const {fetchBusinesses, businesses, loading, error, setSelectedBusiness} =
-    useBusinessStore();
+  const {
+    fetchBusinesses,
+    businesses,
+    promotions,
+    loading,
+    error,
+    setSelectedBusiness,
+  } = useBusinessStore();
   const {user} = useAuthStore();
-  const {favoritesBussines} = useUserStore(); // Obtén la lista de favoritos
+  const {favoritesBussines} = useUserStore();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredBusinesses, setFilteredBusinesses] = useState(businesses);
@@ -30,19 +36,16 @@ const BussinesList = ({showFavoritesOnly = false}) => {
 
   useEffect(() => {
     fetchBusinesses();
-  }, []);
+  }, [user, favoritesBussines, showFavoritesOnly, user.id]);
 
   useEffect(() => {
     let filtered = businesses;
-
-    // Si estamos en la vista de favoritos, filtramos solo los negocios favoritos
     if (showFavoritesOnly) {
       filtered = businesses.filter(business =>
         favoritesBussines.includes(business.id),
       );
     }
 
-    // Aplicamos el filtro de búsqueda
     filtered = filtered.filter(business =>
       business.name.toLowerCase().includes(searchQuery.toLowerCase()),
     );
@@ -50,7 +53,6 @@ const BussinesList = ({showFavoritesOnly = false}) => {
     setFilteredBusinesses(filtered);
   }, [searchQuery, businesses, favoritesBussines, showFavoritesOnly]);
 
-  // Función para manejar la actualización al deslizar hacia abajo
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     fetchBusinesses().then(() => {
@@ -70,7 +72,6 @@ const BussinesList = ({showFavoritesOnly = false}) => {
     );
   };
 
-  console.log(user);
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
